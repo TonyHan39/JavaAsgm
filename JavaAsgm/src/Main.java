@@ -7,7 +7,7 @@ public class Main {
 	//array list for every class
 	public static ArrayList<Staff> staffArray = new ArrayList<Staff>();
 		
-	public static void main (String[] args) {
+	public static void main (String[] args) {//here got main liao
 		
 		//data stored in array
 		staffArray.add(new Staff("EMP001", "Tony", "Staff", 3999.00, "ST0001", "qwerty"));
