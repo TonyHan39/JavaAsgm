@@ -4,7 +4,7 @@ public class Staff extends Employee {
 	
 	public Staff(){}
 	
-	public Staff(String staffID, String staffName,String position, double salary, String staffLoginID, String staffPassword){
+	public Staff(String staffID, String staffName, String position, double salary, String staffLoginID, String staffPassword){
 		super(staffID, staffName, position, salary);
 		this.staffLoginID = staffLoginID;
 		this.staffPassword = staffPassword;

@@ -1,23 +1,59 @@
 import java.util.Scanner;
 import java.lang.String;
+import java.util.*;
+import java.io.*;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 public class Main {
 	
-	//array list for every class
+	//array list for every classes
 	public static ArrayList<Staff> staffArray = new ArrayList<Staff>();
+	public static ArrayList<Manager> managerArray = new ArrayList<Manager>();
+	
+	public static void main (String[] args) {
 		
-	public static void main (String[] args) {//here got main liao
+		//data stored in array----
+		//array for manager information
+		managerArray.add(new Manager("EM0001", "Albert Einstein", "Manager", 8000.00, "MA0001", "qwerty"));
+		managerArray.add(new Manager("EM0002", "Barry Allen", "Manager", 8000.00, "MA0002", "qwerty"));
+		managerArray.add(new Manager("EM0003", "Christine Palmer", "Manager", 8000.00, "MA0003", "qwerty"));
+		managerArray.add(new Manager("EM0004", "David Beckham", "Manager", 8000.00, "MA0004", "qwerty"));
+		managerArray.add(new Manager("EM0005", "Enoch Fullbuster", "Manager", 8000.00, "MA0005", "qwerty"));
 		
-		//data stored in array
-		staffArray.add(new Staff("EMP001", "Tony", "Staff", 3999.00, "ST0001", "qwerty"));
+		//array for Staff information
+		staffArray.add(new Staff("EMP0006", "Gwen Stacy", "Staff", 6000.00, "ST0001", "qwerty"));
+		staffArray.add(new Staff("EMP0007", "Harry Potter", "Staff", 6000.00, "ST0002", "qwerty"));
+		staffArray.add(new Staff("EMP0008", "Ivan Stark", "Staff", 6000.00, "ST0003", "qwerty"));
+		staffArray.add(new Staff("EMP0009", "James Brooke", "Staff", 6000.00, "ST0004", "qwerty"));
+		staffArray.add(new Staff("EMP0010", "Kaecilius ", "Staff", 6000.00, "ST0005", "qwerty"));
+		staffArray.add(new Staff("EMP0011", "Lincoln ", "Staff", 6000.00, "ST0006", "qwerty"));
+		staffArray.add(new Staff("EMP0012", "Mandy", "Staff", 6000.00, "ST0007", "qwerty"));
+		staffArray.add(new Staff("EMP0013", "Natasha Romaroff", "Staff", 6000.00, "ST0008", "qwerty"));
+		staffArray.add(new Staff("EMP0014", "Obama Ocean", "Staff", 6000.00, "ST0009", "qwerty"));
+		staffArray.add(new Staff("EMP0015", "Peter Parker", "Staff", 6000.00, "ST0010", "qwerty"));
+		staffArray.add(new Staff("EMP0016", "Q", "Staff", 6000.00, "ST0011", "qwerty"));
+		staffArray.add(new Staff("EMP0017", "R", "Staff", 6000.00, "ST0012", "qwerty"));
+		staffArray.add(new Staff("EMP0018", "Shinichi Kudo", "Staff", 6000.00, "ST0013", "qwerty"));
+		staffArray.add(new Staff("EMP0019", "Tony Han", "Staff", 6000.00, "ST0014", "qwerty"));
+		staffArray.add(new Staff("EMP0020", "U", "Staff", 6000.00, "ST0015", "qwerty"));
+		staffArray.add(new Staff("EMP0021", "Vin Diesel", "Staff", 6000.00, "ST0016", "qwerty"));
+		staffArray.add(new Staff("EMP0022", "Wendy Marvell", "Staff", 6000.00, "ST0017", "qwerty"));
+		staffArray.add(new Staff("EMP0023", "X", "Staff", 6000.00, "ST0018", "qwerty"));
+		staffArray.add(new Staff("EMP0024", "Yvon", "Staff", 6000.00, "ST0019", "qwerty"));
+		staffArray.add(new Staff("EMP0025", "Z", "Staff", 6000.00, "ST0020", "qwerty"));
+		
 		
 		Scanner scanner = new Scanner(System.in);
+		
+		SimpleDateFormat timeFormat = new SimpleDateFormat("dddd-MMMM-yyyy hh:mm:ss");
+		Date date = new Date();
 		
 		int choice = 0;
 		int next = 0;
 		boolean loginCondition;
-		loginMenu();
+		logo();
 		choice = loginMenu();
 		loginCondition = loginMethod(choice);
 		
@@ -26,7 +62,11 @@ public class Main {
 				do{
 					int staffChoice;
 					switch(staffChoice = staffMenu()){
-						//staff choicesss
+						//case 1: next = searchMethod(); break;
+						//case 2: next = addMethod(); break;
+						//case 3: next = viewFoodDetails(); break;
+					    //case 4: next = viewTransactionHistory(); break;
+						//default: System.exit(0);
 					}
 				}while(next == 1);
 			}
@@ -36,11 +76,36 @@ public class Main {
 				do{
 					int managerChoice;
 					switch(managerChoice=managerMenu()){
-						
+						//case 1: next = addStaffDetails(); break;
+						//case 2: next = modifyStaffDetails(); break;
+						//case 3: next = deleteStaffDetails(); break;
+						//case 4: next = viewStaffDetails(); break;
+						//case 5: next = addNewFoodDetails(); break;
+						//case 6: next = modifyFoodDetails(); break;
+						//case 7: next = deleteFoodDetails(); break;
+						//case 8: next = viewFoodDetails(); break;
+						//default: System.exit(0);
 					}
 				}while(next == 1);
 			}
 		}
+		System.out.println("Thank you! Goodbye!");
+	}
+	
+	public static void logo() {
+		System.out.println("=================================================================================");
+		System.out.println("|                                                                               |");
+		System.out.println("|                  Welcome to Restaurant                                        |");
+		System.out.println("|                                                                               |");
+		System.out.println("|    RRRRR  EEEEE   SSS  TTTTTTT   A    U    U RRRRR     A    N     N TTTTTTT   |");
+		System.out.println("|    R    R E      S   S    T     A A   U    U R    R   A A   NN    N    T      |");
+		System.out.println("|    R    R E      S        T    A   A  U    U R    R  A   A  N N   N    T      |");
+		System.out.println("|    RRRRR  EEEE    SSS     T   AAAAAAA U    U RRRRR  AAAAAAA N  N  N    T      |");
+		System.out.println("|    R  R   E          S    T   A     A U    U R  R   A     A N   N N    T      |");
+		System.out.println("|    R   R  E      S   S    T   A     A U    U R   R  A     A N    NN    T      |");
+		System.out.println("|    R    R EEEEE   SSS     T   A     A  UUUU  R    R A     A N     N    T      |");
+		System.out.println("|                                                                               |");
+		System.out.println("=================================================================================");
 	}
 	
 	public static int loginMenu(){
@@ -50,12 +115,12 @@ public class Main {
 		while(choice <= 0 || choice > 2){
 			try{
 				System.out.println("");
-				System.out.println("______________________");
-				System.out.println("|Choose Your Position|");
-				System.out.println("|--------------------|");
-				System.out.println("|     1. Staff       |");
-				System.out.println("|     2. Manager     |");
-				System.out.println("|____________________|\n\n");
+				System.out.println("========================");
+				System.out.println("| Choose Your Position |");
+				System.out.println("========================");
+				System.out.println("|     1. Staff         |");
+				System.out.println("|     2. Manager       |");
+				System.out.println("========================\n\n");
 				System.out.print("Enter your position: ");
 				choice = scanner.nextInt();
 			}
@@ -83,7 +148,7 @@ public class Main {
 		
 		switch(choice){
 			case 1: do{
-						System.out.print("Login ID : ");
+						System.out.print("Staff Login ID : ");
 						loginID = scanner.next();
 						System.out.print("Password : ");
 						loginPassword = scanner.next();
@@ -92,21 +157,47 @@ public class Main {
 						boolean checkStaffID = staff.validateLoginID(loginID);
 						
 						if(checkStaffID == true){
-							for(int i=0; i < staffArray.size(); i++){
+							for(int i = 0; i < staffArray.size(); i++){
 								if((loginID.equals(staffArray.get(i).getStaffLoginID())) && (loginPassword.equals(staffArray.get(i).getStaffPassword())) == true){
-									System.out.println("Welcome");
+									Date date = new Date();
+									System.out.printf("Welcome Staff %s\t\t\t Logged In Time: %s\n\n", staffArray.get(i).getEmployeeName(), date);
+									return isStaff = true;
 								}
 							}
 							if(isStaff == false){
 								System.out.println("Access Denied");
 							}
 						}
+						else {
+							System.out.println("Invalid ID or Password.");
+						}
 					}while(isStaff == false);
 			break;
 			
-			//case 2: 
+			case 2: do {
+						System.out.print("Manager Login ID: ");
+						loginID = scanner.next();
+						System.out.print("Password: ");
+						loginPassword = scanner.next();
+						
+						UserLogin manager = new UserLogin(loginID, loginPassword);
+						boolean checkManagerID = manager.validateLoginID(loginID);
+						
+						if(checkManagerID == true) {
+							for(int i = 0; i < managerArray.size(); i++) {
+								if((loginID.equals(managerArray.get(i).getLoginID())) && (loginPassword.equals(managerArray.get(i).getPassword())) == true) {
+									Date date = new Date();
+									System.out.printf("Welcome Manager %s\t\t\t Logged In Time: %s\n\n", managerArray.get(i).getEmployeeName(), date);
+									return isManager = true;
+								}
+							}
+							if(isManager == false) {
+								System.out.printf("Invalid ID or Password.\n");
+							}
+						}
+					}while(isManager == false);
 				
-			//break;
+			break;
 			
 			default: System.out.println("Enter again.");
 			loginMenu();
@@ -115,15 +206,77 @@ public class Main {
 	}
 	
 	public static int staffMenu(){
-		System.out.print("Hello Staff");
+		int choice = 0;
+		Scanner scanner = new Scanner(System.in);
 		
-		return 1;
+		System.out.println("===============================");
+		System.out.println("|          STAFF MENU         |");
+		System.out.println("===============================");
+		System.out.println("| 1. Search                   |");
+		System.out.println("| 2. Add                      |");
+		System.out.println("| 3. View Food Details        |");
+		System.out.println("| 4. View Transaction History |");
+		System.out.println("| 5. Exit                     |");
+		System.out.println("===============================");
+		boolean selected = false;
+		do {
+			do {
+				try {
+					System.out.print("Enter your choice: ");
+					choice = scanner.nextInt();
+					selected = true;
+				}
+				catch(Exception ex) {
+					System.out.printf("Only numbers are allowed.\n");
+					scanner.nextLine();
+					System.out.println();
+				}
+				if(choice < 1 || choice > 5) {
+					System.out.print("Enter 1 to 5 only.\n");
+				}
+			}while(choice < 1 || choice > 5);
+		}while(!selected);
+		return choice;
 	}
 	
 	public static int managerMenu(){
-		System.out.print("Hello Manager");
+		Scanner scanner = new Scanner(System.in);
+		int choice = 0;
 		
-		return 1;
+		System.out.println("======================================");
+    	System.out.println("|	         MANAGER MENU			 |");
+    	System.out.println("======================================");
+    	System.out.println("| 1. Add New Staff Details           |");
+    	System.out.println("| 2. Modify Existing Staff Details   |");
+    	System.out.println("| 3. Remove Staff Details            |");
+    	System.out.println("| 4. View All Staff Details          |");
+    	System.out.println("======================================");
+    	System.out.println("| 5. Add New Product Details         |");
+    	System.out.println("| 6. Modify Existing Product Details |");
+    	System.out.println("| 7. Remove Product Details          |");
+    	System.out.println("| 8. View Product Details            |");
+    	System.out.println("| 9. Exit                            |");
+    	System.out.println("======================================");
+    	boolean selected = false;
+    	
+    	do {
+    		do {
+    			try {
+    				System.out.print("Enter your choice: ");
+    				choice = scanner.nextInt();
+    				selected = true;
+    			}
+    			catch(Exception ex) {
+    				System.out.println("Only numbers are allowed.\n");
+    				scanner.nextLine();
+    				System.out.println();
+    			}
+    			if(choice < 1 || choice > 9) {
+    				System.out.println("Enter 1 to 9 only\n");
+    			}
+    		}while(choice < 1 || choice > 9);
+    	}while(!selected);
+    	return choice;
 	}
 	
 }

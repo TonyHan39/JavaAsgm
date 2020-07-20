@@ -27,21 +27,23 @@ public class UserLogin {
     }
     
     public boolean validateLoginID(String loginID){
-    	int chNo = 0;
-    	int	digitNo = 0;
+    	int numOfChar = 0;
+    	int	numOfDigit = 0;
     	
-    	if(loginID.length() > 0 && loginID.length()<6){
-    		if(Character.isUpperCase(loginID.charAt(0))== true){
+    	if(loginID.length() > 0 && loginID.length() < 7){
+    		if(Character.isUpperCase(loginID.charAt(0)) == true){
     			for(int i = 0 ; i < loginID.length(); i++){
-    				if(Character.isLetter(loginID.charAt(i))== true)
-    					chNo++;
-    				if(Character.isDigit(loginID.charAt(i))==true)
-    					digitNo++;
+    				if(Character.isLetter(loginID.charAt(i)) == true) {
+    					numOfChar++;
+    				}
+    				if(Character.isDigit(loginID.charAt(i)) == true) {
+    					numOfDigit++;
+    				}
     			}
     		}
-    		if(chNo == 1 && digitNo == 4){
+    		if(numOfChar == 2 && numOfDigit == 4){
     			return true;
-    		}	
+    		}
     	}
     	return false;
     }
