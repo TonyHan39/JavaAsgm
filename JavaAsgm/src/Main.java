@@ -27,22 +27,22 @@ public class Main {
 		staffArray.add(new Staff("EMP0007", "Harry Potter", "Staff", 6000.00, "ST0002", "qwerty"));
 		staffArray.add(new Staff("EMP0008", "Ivan Stark", "Staff", 6000.00, "ST0003", "qwerty"));
 		staffArray.add(new Staff("EMP0009", "James Brooke", "Staff", 6000.00, "ST0004", "qwerty"));
-		staffArray.add(new Staff("EMP0010", "Kaecilius ", "Staff", 6000.00, "ST0005", "qwerty"));
-		staffArray.add(new Staff("EMP0011", "Lincoln ", "Staff", 6000.00, "ST0006", "qwerty"));
-		staffArray.add(new Staff("EMP0012", "Mandy", "Staff", 6000.00, "ST0007", "qwerty"));
-		staffArray.add(new Staff("EMP0013", "Natasha Romaroff", "Staff", 6000.00, "ST0008", "qwerty"));
-		staffArray.add(new Staff("EMP0014", "Obama Ocean", "Staff", 6000.00, "ST0009", "qwerty"));
+		staffArray.add(new Staff("EMP0010", "Kaecilius", "Staff", 6000.00, "ST0005", "qwerty"));
+		staffArray.add(new Staff("EMP0011", "Lincoln Campbell", "Staff", 6000.00, "ST0006", "qwerty"));
+		staffArray.add(new Staff("EMP0012", "Marcus Aurelius", "Staff", 6000.00, "ST0007", "qwerty"));
+		staffArray.add(new Staff("EMP0013", "Natasha Romanoff", "Staff", 6000.00, "ST0008", "qwerty"));
+		staffArray.add(new Staff("EMP0014", "Oscar Robertson", "Staff", 6000.00, "ST0009", "qwerty"));
 		staffArray.add(new Staff("EMP0015", "Peter Parker", "Staff", 6000.00, "ST0010", "qwerty"));
-		staffArray.add(new Staff("EMP0016", "Q", "Staff", 6000.00, "ST0011", "qwerty"));
-		staffArray.add(new Staff("EMP0017", "R", "Staff", 6000.00, "ST0012", "qwerty"));
+		staffArray.add(new Staff("EMP0016", "Quentin Tarantino", "Staff", 6000.00, "ST0011", "qwerty"));
+		staffArray.add(new Staff("EMP0017", "Richardo Milo", "Staff", 6000.00, "ST0012", "qwerty"));
 		staffArray.add(new Staff("EMP0018", "Shinichi Kudo", "Staff", 6000.00, "ST0013", "qwerty"));
 		staffArray.add(new Staff("EMP0019", "Tony Han", "Staff", 6000.00, "ST0014", "qwerty"));
-		staffArray.add(new Staff("EMP0020", "U", "Staff", 6000.00, "ST0015", "qwerty"));
+		staffArray.add(new Staff("EMP0020", "Ulberto Tozzi", "Staff", 6000.00, "ST0015", "qwerty"));
 		staffArray.add(new Staff("EMP0021", "Vin Diesel", "Staff", 6000.00, "ST0016", "qwerty"));
 		staffArray.add(new Staff("EMP0022", "Wendy Marvell", "Staff", 6000.00, "ST0017", "qwerty"));
-		staffArray.add(new Staff("EMP0023", "X", "Staff", 6000.00, "ST0018", "qwerty"));
-		staffArray.add(new Staff("EMP0024", "Yvon", "Staff", 6000.00, "ST0019", "qwerty"));
-		staffArray.add(new Staff("EMP0025", "Z", "Staff", 6000.00, "ST0020", "qwerty"));
+		staffArray.add(new Staff("EMP0023", "X Æ2 A-12", "Staff", 6000.00, "ST0018", "qwerty"));
+		staffArray.add(new Staff("EMP0024", "Yvonne McGuinness", "Staff", 6000.00, "ST0019", "qwerty"));
+		staffArray.add(new Staff("EMP0025", "Zoey Deutch", "Staff", 6000.00, "ST0020", "qwerty"));
 		
 		
 		Scanner scanner = new Scanner(System.in);
@@ -75,16 +75,16 @@ public class Main {
 			if(loginCondition == true){
 				do{
 					int managerChoice;
-					switch(managerChoice=managerMenu()){
-						//case 1: next = addStaffDetails(); break;
-						//case 2: next = modifyStaffDetails(); break;
-						//case 3: next = deleteStaffDetails(); break;
-						//case 4: next = viewStaffDetails(); break;
-						//case 5: next = addNewFoodDetails(); break;
-						//case 6: next = modifyFoodDetails(); break;
-						//case 7: next = deleteFoodDetails(); break;
-						//case 8: next = viewFoodDetails(); break;
-						//default: System.exit(0);
+					switch(managerChoice = managerMenu()){
+						case 1: next = addStaffDetails(); break;
+						case 2: next = modifyStaffDetails(); break;
+						case 3: next = deleteStaffDetails(); break;
+						case 4: next = viewStaffDetails(); break;
+						case 5: next = addNewFoodDetails(); break;
+						case 6: next = modifyFoodDetails(); break;
+						case 7: next = deleteFoodDetails(); break;
+						case 8: next = viewFoodDetails(); break;
+						default: System.exit(0);
 					}
 				}while(next == 1);
 			}
@@ -92,6 +92,41 @@ public class Main {
 		System.out.println("Thank you! Goodbye!");
 	}
 	
+	private static int viewFoodDetails() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private static int deleteFoodDetails() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private static int modifyFoodDetails() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private static int addNewFoodDetails() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private static int deleteStaffDetails() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private static int modifyStaffDetails() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private static int addStaffDetails() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	public static void logo() {
 		System.out.println("=================================================================================");
 		System.out.println("|                                                                               |");
@@ -278,5 +313,59 @@ public class Main {
     	}while(!selected);
     	return choice;
 	}
+	
+	
+	public static int viewStaffDetails() {
+		int next = 0;
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("\nAll Employees Details");
+		System.out.println("=====================\n");
+		System.out.printf("%-10s %-20s %-15s %s\n", "ID", "Name", "Position", "Salary");
+		System.out.println("=======================================================");
+		
+		for(int i = 0; i < managerArray.size(); i++) {
+			System.out.println(managerArray.get(i).toString());
+		}
+		for(int i = 0; i < staffArray.size(); i++) {
+			System.out.println(staffArray.get(i).toString());
+		}
+		System.out.println("=======================================================\n");
+		boolean selected = false;
+		do {
+			do {
+				try {
+					System.out.println("Continue? (1 for Yes / 2 for No): ");
+					next = scanner.nextInt();
+					selected = true;
+				}
+				catch(Exception ex) {
+					System.out.println("Only numbers are allowed\n");
+					scanner.nextLine();
+					System.out.println();
+				}
+				if(next < 1 || next > 2) {
+					System.out.println("Enter 1 or 2 only\n");
+				}
+			}while(next < 1 || next > 2);
+		}while(!selected);
+		
+		return next;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

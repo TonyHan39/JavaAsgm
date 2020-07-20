@@ -12,6 +12,7 @@ class Employee {
 		this.employeeID = employeeID;
 		this.employeeName = employeeName;
 		this.employeePosition = employeePosition;
+		this.salary = salary;
 	}
 	
 	//accessor for Employee
