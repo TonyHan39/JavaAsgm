@@ -49,9 +49,9 @@ class Employee {
 		return salary;
 	}
 	
-	//return all variable
+	//return all details of employee
 	public String toString(){
-		return String.format("%-10s %-20s %-15s %.2f", employeeID, employeeName, employeePosition, salary);
+		return String.format("%-10s| %-20s| %-12s| %.2f |", employeeID, employeeName, employeePosition, salary);
 	}
 	
 }
