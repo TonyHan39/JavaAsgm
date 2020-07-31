@@ -49,6 +49,10 @@ public class Main {
 		SimpleDateFormat timeFormat = new SimpleDateFormat("dddd-MMMM-yyyy hh:mm:ss");
 		Date date = new Date();
 		
+		mainSelection();
+	}
+	
+	public static void mainSelection() {
 		int choice = 0;
 		int next = 0;
 		boolean loginCondition;
@@ -182,7 +186,7 @@ public class Main {
 					next = scanner.nextInt();
 					done = true;
 					if (next == 2) {
-						main(null);
+						mainSelection();
 					}
 				} catch (Exception ex) {
 					System.out.println("Please enter 1 or 2 only.\n");
@@ -285,24 +289,27 @@ public class Main {
 		System.out.println("=============================================================================");
 		System.out.printf("| %-8s| %-20s| %-9s| %8.2f | %-8s | %-8s |\n", newEmployeeID, newEmployeeName, newPosition, newSalary, newLoginID, newPassword);
 		System.out.println("=============================================================================");
-		try {
-			System.out.print("Press 1 to confirm, press 2 to cancel: ");
-			confirm = getConfirm.nextInt();
-			if (confirm == 1) {
-				staffArray.add(new Staff(newEmployeeID, newEmployeeName, newPosition, newSalary, newLoginID, newPassword));
-				System.out.printf("New Staff %s successfully added.\n", newEmployeeName);
+		do {
+			try {
+				System.out.print("Press 1 to confirm, press 2 to cancel: ");
+				confirm = getConfirm.nextInt();
+				if (confirm == 1) {
+					staffArray.add(new Staff(newEmployeeID, newEmployeeName, newPosition, newSalary, newLoginID, newPassword));
+					System.out.printf("New Staff %s successfully added.\n", newEmployeeName);
+				}
+				else if (confirm == 2) {
+					System.out.println("Addition Cancelled\n");
+				}
+				else {
+					System.out.println("Please enter 1 or 2 only\n");
+				}
+			} catch (Exception e) {
+				System.out.println("Please enter 1 or 2 only");
+				getConfirm.nextLine();
+				System.out.println();
 			}
-			else if (confirm == 2) {
-				System.out.println("Addition Cancelled\n");
-			}
-			else {
-				System.out.println("Please enter 1 or 2 only\n");
-			}
-		} catch (Exception e) {
-			System.out.println("Please enter 1 or 2 only");
-			getConfirm.nextLine();
-			System.out.println();
-		}
+		} while (confirm < 1 || confirm > 2);
+		
 		
 		do {
 			do {
@@ -311,7 +318,7 @@ public class Main {
 					next = getNext.nextInt();
 					done = true;
 					if (next == 2) {
-						main(null);
+						mainSelection();
 					}
 				} catch (Exception ex) {
 					System.out.println("Please enter 1 or 2 only.\n");
@@ -363,24 +370,27 @@ public class Main {
 							System.out.println("Input Accepted\n");
 							System.out.println("Preview changes...");
 							System.out.printf("Confirm change Employee ID from %s to %s?\n", staffArray.get(i).getEmployeeID(), newEmployeeID);
-							try {
-								System.out.print("Press 1 to confirm, press 2 to cancel: ");
-								confirm = scanner.nextInt();
-								if (confirm == 1) {
-									staffArray.get(i).setEmployeeID(newEmployeeID);
-									System.out.println("Staff Details Modification Success\n");
+							do {
+								try {
+									System.out.print("Press 1 to confirm, press 2 to cancel: ");
+									confirm = scanner.nextInt();
+									if (confirm == 1) {
+										staffArray.get(i).setEmployeeID(newEmployeeID);
+										System.out.println("Staff Details Modification Success\n");
+									}
+									else if (confirm == 2) {
+										System.out.println("Modification Cancelled\n");
+									}
+									else {
+										System.out.println("Please enter 1 or 2 only\n");
+									}
+								} catch (Exception e) {
+									System.out.println("Please enter 1 or 2 only");
+									scanner.nextLine();
+									System.out.println();
 								}
-								else if (confirm == 2) {
-									System.out.println("Modification Cancelled\n");
-								}
-								else {
-									System.out.println("Please enter 1 or 2 only\n");
-								}
-							} catch (Exception e) {
-								System.out.println("Please enter 1 or 2 only");
-								scanner.nextLine();
-								System.out.println();
-							}
+							} while (confirm < 1 || confirm > 2);
+							
 						}
 					} while (valid == false || exist == true);
 					break;
@@ -425,24 +435,26 @@ public class Main {
 					System.out.println("Input Accepted\n");
 					System.out.println("Preview changes...");
 					System.out.printf("Confirm change staff position from %s to %s?\n", staffArray.get(i).getEmployeePosition(), newEmployeePosition);
-					try {
-						System.out.print("Press 1 to confirm / Press 2 to cancel: ");
-						confirm = scanner.nextInt();
-						if (confirm == 1) {
-							staffArray.get(i).setEmployeePosition(newEmployeePosition);
-							System.out.println("Staff Details Modification Success\n");
+					do {
+						try {
+							System.out.print("Press 1 to confirm / Press 2 to cancel: ");
+							confirm = scanner.nextInt();
+							if (confirm == 1) {
+								staffArray.get(i).setEmployeePosition(newEmployeePosition);
+								System.out.println("Staff Details Modification Success\n");
+							}
+							else if (confirm == 2) {
+								System.out.println("Modification Cancelled\n");
+							}
+							else {
+								System.out.println("Please enter 1 or 2 only\n");
+							}
+						} catch (Exception e) {
+							System.out.println("Please enter 1 or 2 only");
+							scanner.nextLine();
+							System.out.println();
 						}
-						else if (confirm == 2) {
-							System.out.println("Modification Cancelled\n");
-						}
-						else {
-							System.out.println("Please enter 1 or 2 only\n");
-						}
-					} catch (Exception e) {
-						System.out.println("Please enter 1 or 2 only");
-						scanner.nextLine();
-						System.out.println();
-					}
+					} while (confirm < 1 || confirm > 2);
 					break;
 					
 				case 4:
@@ -456,27 +468,29 @@ public class Main {
 								System.out.println("Input Accepted\n");
 								System.out.println("Preview changes...");
 								System.out.printf("Confirm change staff salary from %.2f to %.2f?\n", staffArray.get(i).getSalary(), newSalary);
-								try {
-									System.out.print("Press 1 to confirm / Press 2 to cancel: ");
-									confirm = scanner.nextInt();
-									if (confirm == 1) {
-										staffArray.get(i).setSalary(newSalary);
-										System.out.println("Staff Details Modification Success\n");
+								do {
+									try {
+										System.out.print("Press 1 to confirm / Press 2 to cancel: ");
+										confirm = scanner.nextInt();
+										if (confirm == 1) {
+											staffArray.get(i).setSalary(newSalary);
+											System.out.println("Staff Details Modification Success\n");
+										}
+										else if (confirm == 2) {
+											System.out.println("Modification Cancelled\n");
+										}
+										else {
+											System.out.println("Please enter 1 or 2 only\n");
+										}
+									} catch (Exception e) {
+										System.out.println("Please enter 1 or 2 only");
+										scanner.nextLine();
+										System.out.println();
 									}
-									else if (confirm == 2) {
-										System.out.println("Modification Cancelled\n");
-									}
-									else {
-										System.out.println("Please enter 1 or 2 only\n");
-									}
-								} catch (Exception e) {
-									System.out.println("Please enter 1 or 2 only");
-									scanner.nextLine();
-									System.out.println();
-								}
+								} while (confirm < 1 || confirm > 2);
 							}
 							else {
-								System.out.println("Salary amount must more than 1000\n");
+								System.out.println("Salary amount must at least 1000\n");
 							}
 						} catch (Exception ex) {
 							System.out.println("Only number are allowed\n");
@@ -496,24 +510,27 @@ public class Main {
 							System.out.println("Input Accepted\n");
 							System.out.println("Preview changes...");
 							System.out.printf("Confirm change Staff Login ID from %s to %s?\n", staffArray.get(i).getStaffLoginID(), newLoginID);
-							try {
-								System.out.print("Press 1 to confirm, press 2 to cancel: ");
-								confirm = scanner.nextInt();
-								if (confirm == 1) {
-									staffArray.get(i).setStaffLoginID(newLoginID);
-									System.out.println("Staff Details Modification Success\n");
+							do {
+								try {
+									System.out.print("Press 1 to confirm, press 2 to cancel: ");
+									confirm = scanner.nextInt();
+									if (confirm == 1) {
+										staffArray.get(i).setStaffLoginID(newLoginID);
+										System.out.println("Staff Details Modification Success\n");
+									}
+									else if (confirm == 2) {
+										System.out.println("Modification Cancelled\n");
+									}
+									else {
+										System.out.println("Please enter 1 or 2 only\n");
+									}
+								} catch (Exception e) {
+									System.out.println("Please enter 1 or 2 only");
+									scanner.nextLine();
+									System.out.println();
 								}
-								else if (confirm == 2) {
-									System.out.println("Modification Cancelled\n");
-								}
-								else {
-									System.out.println("Please enter 1 or 2 only\n");
-								}
-							} catch (Exception e) {
-								System.out.println("Please enter 1 or 2 only");
-								scanner.nextLine();
-								System.out.println();
-							}
+							} while (confirm < 1 || confirm > 2);
+							
 						}
 					} while (valid == false || exist == true);
 					break;
@@ -527,24 +544,26 @@ public class Main {
 							System.out.println("Input Accepted\n");
 							System.out.println("Preview changes...");
 							System.out.printf("Confirm change Staff Password to %s?\n", newLoginPassword);
-							try {
-								System.out.print("Press 1 to confirm, press 2 to cancel: ");
-								confirm = scanner.nextInt();
-								if (confirm == 1) {
-									staffArray.get(i).setStaffPassword(newLoginPassword);
-									System.out.println("Staff Details Modification Success\n");
+							do {
+								try {
+									System.out.print("Press 1 to confirm, press 2 to cancel: ");
+									confirm = scanner.nextInt();
+									if (confirm == 1) {
+										staffArray.get(i).setStaffPassword(newLoginPassword);
+										System.out.println("Staff Details Modification Success\n");
+									}
+									else if (confirm == 2) {
+										System.out.println("Modification Cancelled\n");
+									}
+									else {
+										System.out.println("Please enter 1 or 2 only\n");
+									}
+								} catch (Exception e) {
+									System.out.println("Please enter 1 or 2 only");
+									scanner.nextLine();
+									System.out.println();
 								}
-								else if (confirm == 2) {
-									System.out.println("Modification Cancelled\n");
-								}
-								else {
-									System.out.println("Please enter 1 or 2 only\n");
-								}
-							} catch (Exception e) {
-								System.out.println("Please enter 1 or 2 only");
-								scanner.nextLine();
-								System.out.println();
-							}
+							} while (confirm < 1 || confirm > 2);
 						}
 					} while (valid == false);
 				}
@@ -563,7 +582,7 @@ public class Main {
 					next = scanner.nextInt();
 					done = true;
 					if (next == 2) {
-						main(null);
+						mainSelection();
 					}
 				} catch (Exception ex) {
 					System.out.println("Please enter 1 or 2 only.\n");
@@ -662,6 +681,9 @@ public class Main {
 			else {
 				System.out.println("Staff log in ID must consists of 2 uppercase alphabet 'ST' and 4 digit numbers\n");
 			}
+		}
+		else {
+			System.out.println("Staff log in ID must consists of 2 uppercase alphabet 'ST' and 4 digit numbers\n");
 		}
 		return false;
 	}

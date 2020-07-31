@@ -30,6 +30,8 @@ public class UserLogin {
     	int numOfChar = 0;
     	int	numOfDigit = 0;
     	
+    	//example of login id : ST0001, MA0001
+    	//all login id must consist of 2 uppercased characters and 4 digit integer
     	if(loginID.length() > 0 && loginID.length() < 7){
     		if(Character.isUpperCase(loginID.charAt(0)) == true){
     			for(int i = 0 ; i < loginID.length(); i++){
