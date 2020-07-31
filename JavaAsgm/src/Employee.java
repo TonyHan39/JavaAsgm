@@ -51,7 +51,7 @@ class Employee {
 	
 	//return all details of employee
 	public String toString(){
-		return String.format("%-10s| %-20s| %-12s| %.2f |", employeeID, employeeName, employeePosition, salary);
+		return String.format("%-10s| %-20s| %-10s| %8.2f |", employeeID, employeeName, employeePosition, salary);
 	}
 	
 }
