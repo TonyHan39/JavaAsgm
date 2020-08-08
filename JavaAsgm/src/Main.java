@@ -55,7 +55,7 @@ public class Main {
 	public static void mainSelection() {
 		int choice = 0;
 		int next = 0;
-		boolean loginCondition;
+		boolean loginCondition = false;
 		choice = loginMenu();
 		loginCondition = loginMethod(choice);
 		
@@ -65,12 +65,12 @@ public class Main {
 					int staffChoice;
 					switch(staffChoice = staffMenu()){
 						case 1: next = searchFoodDetails(); break;
-						case 2: next = addNewFoodDetails(); break;
+						case 2: next = addNewFoodDetails(); break; //create new order
 						case 3: next = viewFoodDetails(); break;
 					    case 4: next = viewTransactionHistory(); break;
-						default: next = loginMenu();
+						default: mainSelection();
 					}
-				}while(next == 1);
+				}while(next == 1 || next == 2);//call alvin punya method at last
 			}
 		}
 		else if(choice == 2){
@@ -86,7 +86,7 @@ public class Main {
 						case 6: next = modifyFoodDetails(); break;
 						case 7: next = deleteFoodDetails(); break;
 						case 8: next = viewFoodDetails(); break;
-						default: next = loginMenu();
+						default: mainSelection();
 					}
 				} while (next == 1 || next == 2);
 			}
@@ -98,7 +98,7 @@ public class Main {
 	}
 	
 	
-	//alvin punya--------------------------------
+	//alvin punya--------------------------------call using package
 	private static int searchFoodDetails() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -125,78 +125,7 @@ public class Main {
 	}
 	//-----------------------------------------
 
-	//a method for manager to remove a staff from the system
-	public static int deleteStaffDetails() {
-		int next = 0;
-		int confirm = 0;
-		boolean found = false;
-		boolean done = false;
-		Scanner scanner = new Scanner(System.in);
-		Scanner getConfirm = new Scanner(System.in);
-		System.out.println("\nDelete Staff Details");
-		System.out.println("====================");
-		
-		do {
-			System.out.print("Enter Employee ID of staff to delete: ");
-			String delete = scanner.nextLine();
-			for (int i = 0; i < staffArray.size(); i++) {
-				if (delete.equals(staffArray.get(i).getEmployeeID())) {
-					found = true;
-					System.out.println("Preview Deletion...");
-					System.out.println("============================================================================");
-					System.out.printf("| %-8s| %-20s| %-9s| %-6s  | %-8s | %-8s |\n", "ID", "Name", "Position", "Salary", "Login ID", "Password");
-					System.out.println("============================================================================");
-					System.out.printf("| %-8s| %-20s| %-9s| %-7.2f | %-8s | %-8s |\n", staffArray.get(i).getEmployeeID(), staffArray.get(i).getEmployeeName(), staffArray.get(i).getEmployeePosition(), staffArray.get(i).getSalary(), staffArray.get(i).getStaffLoginID(), staffArray.get(i).getStaffPassword());
-					System.out.println("============================================================================");
-					System.out.println("Confirm to delete this staff?");
-					do {
-						try {
-							System.out.print("Press 1 to delete / Press 2 to cancel: ");
-							confirm = getConfirm.nextInt();
-							if (confirm == 1) {
-								System.out.printf("\nStaff %s has been removed.\n", staffArray.get(i).getEmployeeName());
-								done = true;
-								staffArray.remove(i);
-							}
-							else if (confirm == 2) {
-								System.out.println("Cancelled...\n\n");
-								done = true;
-							}
-							else {
-								System.out.println("Please enter 1 or 2 only\n");
-							}
-						} catch (Exception e) {
-							System.out.println("Please enter 1 or 2 only");
-							getConfirm.nextLine();
-							System.out.println();
-						}
-					} while (done == false);
-				}
-			}
-			if (found == false) {
-				System.out.println("No record found. Please try again.\n");
-			}
-		} while (!found);
-		
-		done = false;
-		do {
-			do {
-				try {
-					System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
-					next = scanner.nextInt();
-					done = true;
-					if (next == 2) {
-						mainSelection();
-					}
-				} catch (Exception ex) {
-					System.out.println("Please enter 1 or 2 only.\n");
-					scanner.nextLine();
-					System.out.println();
-				}
-			} while (next < 1 || next > 2);
-		} while (!done);
-		return next;
-	}
+	
 	
 	//a method for manager to add a new staff into the system
 	public static int addStaffDetails() {
@@ -253,7 +182,7 @@ public class Main {
 					System.out.println("Input Accepted\n");
 				}
 				else {
-					System.out.println("Salary amount must more than 1000\n");
+					System.out.println("Salary amount must at least 1000\n");
 				}
 			} catch (Exception ex) {
 				System.out.printf("Only numbers are allowed\n");
@@ -310,13 +239,13 @@ public class Main {
 			}
 		} while (confirm < 1 || confirm > 2);
 		
-		
+		boolean doneAdd = false;
 		do {
 			do {
 				try {
 					System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
 					next = getNext.nextInt();
-					done = true;
+					doneAdd = true;
 					if (next == 2) {
 						mainSelection();
 					}
@@ -326,18 +255,62 @@ public class Main {
 					System.out.println();
 				}
 			} while (next < 1 || next > 2);
-		} while (!done);
-		
+		} while (!doneAdd);
 		return next;
+		
 	}
 	
+	//allow manager to display all the employees' details in table form
+	public static int viewStaffDetails() {
+			int next = 0;
+			Scanner scanner = new Scanner(System.in);
+			
+			System.out.println("\nAll Employees Details");
+			System.out.println("=======================================================================================");
+			System.out.printf("| No. | %-10s| %-20s| %-10s|  %s  | %s | %s  |\n", "ID", "Name", "Position", "Salary", "Login ID", "Password");
+			System.out.println("=======================================================================================");
+			
+			for (int count = 1; count < (managerArray.size() + staffArray.size()); count++) {
+				for(int i = 0; i < managerArray.size(); i++) {
+					System.out.printf("| %2d. | ", count++);
+					System.out.println(managerArray.get(i).toString() + "  " + managerArray.get(i).getLoginID() + "  | " + "Encrypted |");
+				}
+				for(int i = 0; i < staffArray.size(); i++) {
+					System.out.printf("| %2d. | ", count++);
+					System.out.println(staffArray.get(i).toString() + "  " + staffArray.get(i).getStaffLoginID() + "  | " + "Encrypted |");
+				}
+			}
+			
+			System.out.println("=======================================================================================\n");
+			boolean selected = false;
+			do {
+				do {
+					try {
+						System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+						next = scanner.nextInt();
+						selected = true;
+						if (next == 2) {
+							main(null);
+						}
+					}
+					catch(Exception ex) {
+						System.out.println("Please enter 1 or 2 only\n");
+						scanner.nextLine();
+						System.out.println();
+					}
+				}while(next < 1 || next > 2);
+			}while(!selected);
+			
+			return next;
+		}
+		
 	//a method for manager to modify the details of staff
 	public static int modifyStaffDetails() {
 		String newEmployeeID, newEmployeeName, newEmployeePosition;;
 		double newSalary = 0;
 		String newLoginID, newLoginPassword;
 		boolean valid, found = false, exist;
-		int next = 0;
+		
 		int choice;
 		int confirm = 0;
 		Scanner getString = new Scanner(System.in);
@@ -568,29 +541,31 @@ public class Main {
 					} while (valid == false);
 				}
 			}
-		}
-		if (found == false) {
-			System.out.println("No record found, please try again.\n");
-			modifyStaffDetails();
+			else if (found == false){
+				System.out.println("Invalid ID, please try again.\n");
+				modifyStaffDetails();
+			}
 		}
 		
-		boolean done = false;
+		boolean doneModify = false;
+		int next = 0;
 		do {
 			do {
 				try {
 					System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
-					next = scanner.nextInt();
-					done = true;
+					next = getNext.nextInt();
+					doneModify = true;
 					if (next == 2) {
 						mainSelection();
 					}
 				} catch (Exception ex) {
 					System.out.println("Please enter 1 or 2 only.\n");
-					scanner.nextLine();
+					getNext.nextLine();
 					System.out.println();
 				}
 			} while (next < 1 || next > 2);
-		} while (!done);
+		} while (doneModify == false);
+		//problem ----------------------------------------------------------------------------------------------------------------------------------
 		return next;
 	}
 	
@@ -627,6 +602,80 @@ public class Main {
 		return choice;
 	}
 	
+	//a method for manager to remove a staff from the system
+	public static int deleteStaffDetails() {
+		int next = 0;
+		int confirm = 0;
+		boolean found = false;
+		boolean done = false;
+		Scanner scanner = new Scanner(System.in);
+		Scanner getConfirm = new Scanner(System.in);
+		System.out.println("\nDelete Staff Details");
+		System.out.println("====================");
+		
+		do {
+			System.out.print("Enter Employee ID of staff to delete: ");
+			String delete = scanner.nextLine();
+			for (int i = 0; i < staffArray.size(); i++) {
+				if (delete.equals(staffArray.get(i).getEmployeeID())) {
+					found = true;
+					System.out.println("Preview Deletion...");
+					System.out.println("============================================================================");
+					System.out.printf("| %-8s| %-20s| %-9s| %-6s  | %-8s | %-8s |\n", "ID", "Name", "Position", "Salary", "Login ID", "Password");
+					System.out.println("============================================================================");
+					System.out.printf("| %-8s| %-20s| %-9s| %-7.2f | %-8s | %-8s |\n", staffArray.get(i).getEmployeeID(), staffArray.get(i).getEmployeeName(), staffArray.get(i).getEmployeePosition(), staffArray.get(i).getSalary(), staffArray.get(i).getStaffLoginID(), staffArray.get(i).getStaffPassword());
+					System.out.println("============================================================================");
+					System.out.println("Confirm to delete this staff?");
+					do {
+						try {
+							System.out.print("Press 1 to delete / Press 2 to cancel: ");
+							confirm = getConfirm.nextInt();
+							if (confirm == 1) {
+								System.out.printf("\nStaff %s has been removed.\n", staffArray.get(i).getEmployeeName());
+								done = true;
+								staffArray.remove(i);
+							}
+							else if (confirm == 2) {
+								System.out.println("Cancelled...\n\n");
+								done = true;
+							}
+							else {
+								System.out.println("Please enter 1 or 2 only\n");
+							}
+						} catch (Exception e) {
+							System.out.println("Please enter 1 or 2 only");
+							getConfirm.nextLine();
+							System.out.println();
+						}
+					} while (done == false);
+				}
+			}
+			if (found == false) {
+				System.out.println("No record found. Please try again.\n");
+			}
+		} while (!found);
+		
+		done = false;
+		do {
+			do {
+				try {
+					System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+					next = scanner.nextInt();
+					done = true;
+					if (next == 2) {
+						mainSelection();
+					}
+				} catch (Exception ex) {
+					System.out.println("Please enter 1 or 2 only.\n");
+					scanner.nextLine();
+					System.out.println();
+				}
+			} while (next < 1 || next > 2);
+		} while (!done);
+		return next;
+	}
+	
+	
 	/*validation start------------------------------------------------*/
 	//to validate the format of employees' IDs
 	public static boolean validateEmployeeIDFormat(String id) {
@@ -638,6 +687,9 @@ public class Main {
 			else {
 				System.out.println("Employee ID must consists of 3 uppercase alphabet 'EMP' and 4 digit number.\n");
 			}
+		}
+		else {
+			System.out.println("Employee ID must consists of 3 uppercase alphabet 'EMP' and 4 digit number.\n");
 		}
 		return false;
 	}
@@ -913,49 +965,6 @@ public class Main {
     	return choice;
 	}
 	
-	//allow manager to display all the employees' details in table form
-	public static int viewStaffDetails() {
-		int next = 0;
-		Scanner scanner = new Scanner(System.in);
-		
-		System.out.println("\nAll Employees Details");
-		System.out.println("=======================================================================================");
-		System.out.printf("| No. | %-10s| %-20s| %-10s|  %s  | %s | %s  |\n", "ID", "Name", "Position", "Salary", "Login ID", "Password");
-		System.out.println("=======================================================================================");
-		
-		for (int count = 1; count < (managerArray.size() + staffArray.size()); count++) {
-			for(int i = 0; i < managerArray.size(); i++) {
-				System.out.printf("| %2d. | ", count++);
-				System.out.println(managerArray.get(i).toString() + "  " + managerArray.get(i).getLoginID() + "  | " + "Encrypted |");
-			}
-			for(int i = 0; i < staffArray.size(); i++) {
-				System.out.printf("| %2d. | ", count++);
-				System.out.println(staffArray.get(i).toString() + "  " + staffArray.get(i).getStaffLoginID() + "  | " + "Encrypted |");
-			}
-		}
-		
-		System.out.println("=======================================================================================\n");
-		boolean selected = false;
-		do {
-			do {
-				try {
-					System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
-					next = scanner.nextInt();
-					selected = true;
-					if (next == 2) {
-						main(null);
-					}
-				}
-				catch(Exception ex) {
-					System.out.println("Please enter 1 or 2 only\n");
-					scanner.nextLine();
-					System.out.println();
-				}
-			}while(next < 1 || next > 2);
-		}while(!selected);
-		
-		return next;
-	}
 	
 	
 	
