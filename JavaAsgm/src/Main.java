@@ -290,7 +290,7 @@ public class Main {
 						next = scanner.nextInt();
 						selected = true;
 						if (next == 2) {
-							main(null);
+							mainSelection();
 						}
 					}
 					catch(Exception ex) {
@@ -313,19 +313,41 @@ public class Main {
 		
 		int choice;
 		int confirm = 0;
-		Scanner getString = new Scanner(System.in);
-		Scanner getDouble = new Scanner(System.in);
 		Scanner scanner = new Scanner(System.in);
+		Scanner getNewEmployeeID = new Scanner(System.in);
+		Scanner getNewName = new Scanner(System.in);
+		Scanner getNewPosition = new Scanner(System.in);
+		Scanner getNewSalary = new Scanner(System.in);
+		Scanner getNewLoginID = new Scanner(System.in);
+		Scanner getNewPassword = new Scanner(System.in);
+		
+		Scanner getConfirm = new Scanner(System.in);
 		Scanner getNext = new Scanner(System.in);
 		
+		String ID = "";
 		System.out.println("Modify Staff Details");
 		System.out.println("====================");
-		System.out.print("Enter Employee ID for staff: ");
-		String ID = getString.nextLine();
+		do {
+			try {
+				System.out.print("Enter Employee ID for staff: ");
+				ID = scanner.nextLine();
+				for (int i = 0; i < staffArray.size(); i++) {
+					if (ID.equals(staffArray.get(i).getEmployeeID())) {
+						found = true;
+					}
+				}
+				if (found == false) {
+					System.out.println("Invalid ID, please try again.\n");
+				}
+			} catch (Exception ex) {
+				scanner.nextLine();
+				System.out.println();
+			}
+		} while (found == false);
+		
 		
 		for (int i = 0; i < staffArray.size(); i++) {
 			if (ID.equals(staffArray.get(i).getEmployeeID())) {
-				found = true;
 				System.out.println("==============================================================================");
 				System.out.printf("| %-8s| %-20s| %-9s|  %-7s | %-8s | %-8s  |\n", "ID", "Name", "Position", "Salary", "Login ID", "Password");
 				System.out.println("==============================================================================");
@@ -336,7 +358,7 @@ public class Main {
 				case 1: 
 					do {
 						System.out.print("Enter new Employee ID for Staff: ");
-						newEmployeeID = getString.nextLine();
+						newEmployeeID = getNewEmployeeID.nextLine();
 						valid = validateEmployeeIDFormat(newEmployeeID);
 						exist = validateExistingEmployeeID(newEmployeeID);
 						if (valid == true && exist == false) {
@@ -346,7 +368,7 @@ public class Main {
 							do {
 								try {
 									System.out.print("Press 1 to confirm, press 2 to cancel: ");
-									confirm = scanner.nextInt();
+									confirm = getConfirm.nextInt();
 									if (confirm == 1) {
 										staffArray.get(i).setEmployeeID(newEmployeeID);
 										System.out.println("Staff Details Modification Success\n");
@@ -359,7 +381,7 @@ public class Main {
 									}
 								} catch (Exception e) {
 									System.out.println("Please enter 1 or 2 only");
-									scanner.nextLine();
+									getConfirm.nextLine();
 									System.out.println();
 								}
 							} while (confirm < 1 || confirm > 2);
@@ -371,7 +393,7 @@ public class Main {
 				case 2:
 					do {
 						System.out.print("Enter new Staff name: ");
-						newEmployeeName = getString.nextLine();
+						newEmployeeName = getNewName.nextLine();
 						valid = validateEmployeeName(newEmployeeName);
 						if (valid == true) {
 							System.out.println("Input Accepted\n");
@@ -380,7 +402,7 @@ public class Main {
 							do {
 								try {
 									System.out.print("Press 1 to confirm / Press 2 to cancel: ");
-									confirm = scanner.nextInt();
+									confirm = getConfirm.nextInt();
 									if (confirm == 1) {
 										staffArray.get(i).setEmployeeName(newEmployeeName);
 										System.out.println("Staff Details Modification Success\n");
@@ -393,7 +415,7 @@ public class Main {
 									}
 								} catch (Exception e) {
 									System.out.println("Please enter 1 or 2 only");
-									scanner.nextLine();
+									getConfirm.nextLine();
 									System.out.println();
 								}
 							} while (confirm < 1 || confirm > 2);
@@ -404,14 +426,14 @@ public class Main {
 					
 				case 3:
 					System.out.print("Enter new staff position: ");
-					newEmployeePosition = getString.nextLine();
+					newEmployeePosition = getNewPosition.nextLine();
 					System.out.println("Input Accepted\n");
 					System.out.println("Preview changes...");
 					System.out.printf("Confirm change staff position from %s to %s?\n", staffArray.get(i).getEmployeePosition(), newEmployeePosition);
 					do {
 						try {
 							System.out.print("Press 1 to confirm / Press 2 to cancel: ");
-							confirm = scanner.nextInt();
+							confirm = getConfirm.nextInt();
 							if (confirm == 1) {
 								staffArray.get(i).setEmployeePosition(newEmployeePosition);
 								System.out.println("Staff Details Modification Success\n");
@@ -424,7 +446,7 @@ public class Main {
 							}
 						} catch (Exception e) {
 							System.out.println("Please enter 1 or 2 only");
-							scanner.nextLine();
+							getConfirm.nextLine();
 							System.out.println();
 						}
 					} while (confirm < 1 || confirm > 2);
@@ -435,7 +457,7 @@ public class Main {
 					do {
 						try {
 							System.out.print("Enter new staff salary: ");
-							newSalary = getDouble.nextDouble();
+							newSalary = getNewSalary.nextDouble();
 							if (newSalary > 1000) {
 								done = true;
 								System.out.println("Input Accepted\n");
@@ -444,7 +466,7 @@ public class Main {
 								do {
 									try {
 										System.out.print("Press 1 to confirm / Press 2 to cancel: ");
-										confirm = scanner.nextInt();
+										confirm = getConfirm.nextInt();
 										if (confirm == 1) {
 											staffArray.get(i).setSalary(newSalary);
 											System.out.println("Staff Details Modification Success\n");
@@ -457,7 +479,7 @@ public class Main {
 										}
 									} catch (Exception e) {
 										System.out.println("Please enter 1 or 2 only");
-										scanner.nextLine();
+										getConfirm.nextLine();
 										System.out.println();
 									}
 								} while (confirm < 1 || confirm > 2);
@@ -467,7 +489,7 @@ public class Main {
 							}
 						} catch (Exception ex) {
 							System.out.println("Only number are allowed\n");
-							getDouble.nextLine();
+							getNewSalary.nextLine();
 							System.out.println();
 						}
 					} while (!done);
@@ -476,7 +498,7 @@ public class Main {
 				case 5:
 					do {
 						System.out.print("Enter new staff Login ID: ");
-						newLoginID = getString.nextLine();
+						newLoginID = getNewLoginID.nextLine();
 						valid = validateStaffLoginID(newLoginID);
 						exist = validateExistingStaffLoginID(newLoginID);
 						if (valid == true && exist == false) {
@@ -486,7 +508,7 @@ public class Main {
 							do {
 								try {
 									System.out.print("Press 1 to confirm, press 2 to cancel: ");
-									confirm = scanner.nextInt();
+									confirm = getConfirm.nextInt();
 									if (confirm == 1) {
 										staffArray.get(i).setStaffLoginID(newLoginID);
 										System.out.println("Staff Details Modification Success\n");
@@ -499,7 +521,7 @@ public class Main {
 									}
 								} catch (Exception e) {
 									System.out.println("Please enter 1 or 2 only");
-									scanner.nextLine();
+									getConfirm.nextLine();
 									System.out.println();
 								}
 							} while (confirm < 1 || confirm > 2);
@@ -511,7 +533,7 @@ public class Main {
 				case 6:
 					do {
 						System.out.print("Enter new staff password: ");
-						newLoginPassword = getString.nextLine();
+						newLoginPassword = getNewPassword.nextLine();
 						valid = validatePasswordFormat(newLoginPassword);
 						if (valid == true) {
 							System.out.println("Input Accepted\n");
@@ -520,7 +542,7 @@ public class Main {
 							do {
 								try {
 									System.out.print("Press 1 to confirm, press 2 to cancel: ");
-									confirm = scanner.nextInt();
+									confirm = getConfirm.nextInt();
 									if (confirm == 1) {
 										staffArray.get(i).setStaffPassword(newLoginPassword);
 										System.out.println("Staff Details Modification Success\n");
@@ -533,17 +555,13 @@ public class Main {
 									}
 								} catch (Exception e) {
 									System.out.println("Please enter 1 or 2 only");
-									scanner.nextLine();
+									getConfirm.nextLine();
 									System.out.println();
 								}
 							} while (confirm < 1 || confirm > 2);
 						}
 					} while (valid == false);
 				}
-			}
-			else if (found == false){
-				System.out.println("Invalid ID, please try again.\n");
-				modifyStaffDetails();
 			}
 		}
 		
@@ -565,7 +583,6 @@ public class Main {
 				}
 			} while (next < 1 || next > 2);
 		} while (doneModify == false);
-		//problem ----------------------------------------------------------------------------------------------------------------------------------
 		return next;
 	}
 	
@@ -589,13 +606,13 @@ public class Main {
 					System.out.print("Enter your choice: ");
 					choice = scanner.nextInt();
 					done = true;
+					if (choice < 1 || choice > 6) {
+						System.out.println("Please enter 1 to 6 only\n");
+					}
 				} catch (Exception ex) {
-					System.out.println("Only numbers are allowed\n");
+					System.out.println("Only numbers are allowed");
 					scanner.nextLine();
 					System.out.println();
-				}
-				if (choice < 1 || choice > 6) {
-					System.out.println("Please enter 1 to 6 only\n");
 				}
 			} while (choice < 1 || choice > 6);
 		} while (!done);
@@ -714,8 +731,14 @@ public class Main {
 	
 	//to validate the length of employees' name
 	public static boolean validateEmployeeName(String name) {
+		String nameFormat = "^[A-Za-z]{20}";
 		if (name.length() > 0 && name.length() <= 20) {
-			return true;
+			if (name.matches(nameFormat) == true) {
+				return true;
+			}
+			else {
+				System.out.println("Symbols are not allows.\n");
+			}
 		}
 		else {
 			System.out.println("Name entered is too long. Maximum length for name is 20 characters.\n");
@@ -796,8 +819,8 @@ public class Main {
 				System.out.println("| Choose Your Position |");
 				System.out.println("|       To Log In      |");
 				System.out.println("========================");
-				System.out.println("|     1. Staff         |");
-				System.out.println("|     2. Manager       |");
+				System.out.println("|     1. STAFF         |");
+				System.out.println("|     2. MANAGER       |");
 				System.out.println("|     3. Exit          |");
 				System.out.println("========================\n\n");
 				System.out.print("Enter your position: ");
