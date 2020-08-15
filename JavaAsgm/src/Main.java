@@ -64,13 +64,11 @@ public class Main {
 				do{
 					int staffChoice;
 					switch(staffChoice = staffMenu()){
-						case 1: next = searchFoodDetails(); break;
-						case 2: next = addNewFoodDetails(); break; //create new order
-						case 3: next = viewFoodDetails(); break;
-					    case 4: next = viewTransactionHistory(); break;
+						case 1: next = createNewOrder(); break; //create new order
+						case 2: next = viewTransactionHistory(); break; 
 						default: mainSelection();
 					}
-				}while(next == 1 || next == 2);//call alvin punya method at last
+				}while(next == 1 || next == 2);
 			}
 		}
 		else if(choice == 2){
@@ -82,10 +80,12 @@ public class Main {
 						case 2: next = modifyStaffDetails(); break;
 						case 3: next = deleteStaffDetails(); break;
 						case 4: next = viewStaffDetails(); break;
-						case 5: next = addNewFoodDetails(); break;
+						case 5: next = addNewFoodDetails(); break; //alvin
 						case 6: next = modifyFoodDetails(); break;
 						case 7: next = deleteFoodDetails(); break;
 						case 8: next = viewFoodDetails(); break;
+						case 9: next = viewTransactionHistory(); break;
+						case 10: next = viewDailySalesReport(); break;
 						default: mainSelection();
 					}
 				} while (next == 1 || next == 2);
@@ -97,36 +97,43 @@ public class Main {
 		System.out.println("\nSystem shutting down...\nThank you! Goodbye!");
 	}
 	
-	
-	//alvin punya--------------------------------call using package
-	private static int searchFoodDetails() {
+	//call other packages.................................
+	private static int viewDailySalesReport() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	private static int viewFoodDetails() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	private static int deleteFoodDetails() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	private static int modifyFoodDetails() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	private static int addNewFoodDetails() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 	private static int viewTransactionHistory() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	//-----------------------------------------
 
-	
-	
+	private static int createNewOrder() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	//CRUD for manager==========================================================
 	//a method for manager to add a new staff into the system
 	public static int addStaffDetails() {
 		String newEmployeeID;
@@ -917,15 +924,13 @@ public class Main {
 		int choice = 0;
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.println("===============================");
-		System.out.println("|          STAFF MENU         |");
-		System.out.println("===============================");
-		System.out.println("| 1. Search                   |");
-		System.out.println("| 2. Add                      |");
-		System.out.println("| 3. View Food Details        |");
-		System.out.println("| 4. View Transaction History |");
-		System.out.println("| 5. Log Out                  |");
-		System.out.println("===============================");
+		System.out.println("================================");
+		System.out.println("|          STAFF MENU          |");
+		System.out.println("================================");
+		System.out.println("| 1. Create New Order          |");
+		System.out.println("| 2. View Transaction History  |");
+		System.out.println("| 3. Log Out                   |");
+		System.out.println("================================");
 		boolean selected = false;
 		do {
 			do {
@@ -939,10 +944,10 @@ public class Main {
 					scanner.nextLine();
 					System.out.println();
 				}
-				if(choice < 1 || choice > 5) {
-					System.out.print("Enter 1 to 5 only.\n");
+				if(choice < 1 || choice > 3) {
+					System.out.print("Enter 1 to 3 only.\n");
 				}
-			}while(choice < 1 || choice > 5);
+			}while(choice < 1 || choice > 3);
 		}while(!selected);
 		return choice;
 	}
@@ -952,20 +957,22 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 		int choice = 0;
 		
-		System.out.println("======================================");
-    	System.out.println("|            MANAGER MENU            |");
-    	System.out.println("======================================");
-    	System.out.println("| 1. Add A New Staff Details         |");
-    	System.out.println("| 2. Modify Existing Staff Details   |");
-    	System.out.println("| 3. Remove A Staff Details          |");
-    	System.out.println("| 4. View All Staff Details          |");
-    	System.out.println("======================================");
-    	System.out.println("| 5. Add New Product Details         |");
-    	System.out.println("| 6. Modify Existing Product Details |");
-    	System.out.println("| 7. Remove A Product Details        |");
-    	System.out.println("| 8. View Product Details            |");
-    	System.out.println("| 9. Log Out                         |");
-    	System.out.println("======================================");
+		System.out.println("=======================================");
+    	System.out.println("|            MANAGER MENU             |");
+    	System.out.println("=======================================");
+    	System.out.println("|  1. Add A New Staff Details         |");
+    	System.out.println("|  2. Modify Existing Staff Details   |");
+    	System.out.println("|  3. Remove A Staff Details          |");
+    	System.out.println("|  4. View All Staff Details          |");
+    	System.out.println("=======================================");
+    	System.out.println("|  5. Add New Food Details            |");
+    	System.out.println("|  6. Modify Existing Food Details    |");
+    	System.out.println("|  7. Remove A Food Details           |");
+    	System.out.println("|  8. View All Food Details           |");
+    	System.out.println("|  9. View Transaction History        |");
+    	System.out.println("| 10. View Daily Sales Report         |");
+    	System.out.println("| 11. Log Out                         |");
+    	System.out.println("=======================================");
     	boolean selected = false;
     	
     	do {
@@ -980,10 +987,10 @@ public class Main {
     				scanner.nextLine();
     				System.out.println();
     			}
-    			if(choice < 1 || choice > 9) {
-    				System.out.println("Enter 1 to 9 only\n");
+    			if(choice < 1 || choice > 11) {
+    				System.out.println("Enter 1 to 11 only\n");
     			}
-    		}while(choice < 1 || choice > 9);
+    		}while(choice < 1 || choice > 11);
     	}while(!selected);
     	return choice;
 	}
