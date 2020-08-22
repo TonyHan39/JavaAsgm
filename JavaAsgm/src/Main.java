@@ -13,6 +13,11 @@ public class Main {
 	public static ArrayList<Staff> staffArray = new ArrayList<Staff>();
 	public static ArrayList<Manager> managerArray = new ArrayList<Manager>();
 	public static ArrayList<Menu> menuList = new ArrayList<Menu>();
+	public static ArrayList<Transaction> transaction = new ArrayList<Transaction>();
+	public static ArrayList<TransRecord> transRecord = new ArrayList<TransRecord>();
+	public static ArrayList<Reciept> reciept = new ArrayList<Reciept>();
+	public static ArrayList<DailySales> dailySales = new ArrayList<DailySales>();
+	public static ArrayList<TopReport> topReport = new ArrayList<TopReport>();
 	
 	//object
 	public static Menu menu = new Menu();
@@ -66,6 +71,20 @@ public class Main {
 		menuList.add( new Menu("1012"	, "Green Tea"			, 7.00, "Beverage") );
 		menuList.add( new Menu("1013"	, "Latte"				, 8.00, "Beverage") );
 		menuList.add( new Menu("1014"	, "Cappocino"			, 8.00, "Beverage") );
+		
+		//add transaction data
+		transaction.add(new Transaction ("tId1001",20.00,15.00,5.00,"2/8/2020"));
+		transaction.add(new Transaction ("tId1002",30.00,25.00,5.00,"3/8/2020"));
+		transaction.add(new Transaction ("tId1003",100.00,56.50,43.50,"4/8/2020"));
+		
+
+		//add TransactionRecord Data
+		transRecord.add(new TransRecord ("tId1001","Chicken Chop",15.00 , 1, 15.00,"2/08/2020"));
+		transRecord.add(new TransRecord ("tId1002","Chicken Chop",15.00 , 1, 15.00,"3/08/2020"));
+		transRecord.add(new TransRecord ("tId1002","Choclate Milk",5.00 , 1, 5.00,"3/08/2020"));
+		transRecord.add(new TransRecord ("tId1003","Beef Steak",25.00 , 3, 75.00,"4/08/2020"));
+		transRecord.add(new TransRecord ("tId1003","Chicken Chop",15.00 , 1, 15.00,"4/08/2020"));
+		transRecord.add(new TransRecord ("tId1003","Choclate Milk",5.00 , 2, 10.00,"4/08/2020"));
 	        
 		
 		/*data stored in arraylist---------------------------------------------------------------------------*/
@@ -91,7 +110,7 @@ public class Main {
 					int staffChoice;
 					switch(staffChoice = staffMenu()){
 						case 1: next = createNewOrder(); break; //create new order
-						case 2: next = viewTransactionHistory(); break; 
+						case 2: next = transHistory(); break; 
 						default: mainSelection();
 					}
 				}while(next == 1 || next == 2);
@@ -110,8 +129,9 @@ public class Main {
 						case 6: next = modifyFoodDetails(); break;
 						case 7: next = deleteFoodDetails(); break;
 						case 8: next = viewFoodDetails(); break;
-						case 9: next = viewTransactionHistory(); break;
-						case 10: next = viewDailySalesReport(); break;
+						case 9: next = TopSales(); break;
+						case 10: next = DailySales(); break;
+						case 11: next = transHistory();break;
 						default: mainSelection();
 					}
 				} while (next == 1 || next == 2);
@@ -124,9 +144,268 @@ public class Main {
 	}
 	
 	//call other packages.................................
-	private static int viewDailySalesReport() {
-		// TODO Auto-generated method stub
-		return 0;
+	private static int DailySales() {
+		Date timenow = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String dateNow = dateFormat.format(timenow);
+		System.out.printf("Today Sales (%s)\n",dateNow);
+		System.out.print("=======================================================\n");
+		System.out.print("|No | Food Name                    |Amount Sold| Total|\n");
+		System.out.print("=======================================================\n");
+		//move transRecord data to dails sale where same date
+		for(int i=0;i<transRecord.size();i++) {
+			if(transRecord.get(i).getDate().equals(dateNow)==true) {
+				dailySales.add(new DailySales (transRecord.get(i).getFoodName(),transRecord.get(i).getAmount(),transRecord.get(i).getPerPrice(),transRecord.get(i).getTotalPerItem()));
+			}
+		}
+		//eleminate repeated data
+		for(int i=0;i<dailySales.size();i++) {
+			for(int k=i+1;k<dailySales.size();k++) {
+				if(dailySales.get(i).getFoodItem().equals(dailySales.get(k).getFoodItem()) == true) {
+					dailySales.get(i).setAmount(dailySales.get(i).getAmount()+dailySales.get(k).getAmount());
+					dailySales.get(i).setPrice(dailySales.get(i).getPrice()+dailySales.get(k).getPrice());
+					dailySales.remove(k);
+				}
+			}
+		}
+		//print
+		double rptGT=0;
+		for(int i=0;i<dailySales.size();i++) {
+			rptGT += dailySales.get(i).getPrice();
+			System.out.printf("|%-3d|%-30s|%-12d|%-4.2f|\n",i+1,dailySales.get(i).getFoodItem(),dailySales.get(i).getAmount(),dailySales.get(i).getPrice());
+			//System.out.printf("%s %d %.2f\n",dailySales.get(i).getFoodItem(),dailySales.get(i).getAmount(),dailySales.get(i).getPrice());
+		}
+		System.out.print("--------------------------------------------------------\n");
+		System.out.printf("Grand Total :                                  |%.2f |\n",rptGT);
+		System.out.print("========================================================\n\n\n");
+		
+		/*for(int i=0;i<transRecord.size();i++) {
+			if(transRecord.get(i).getDate().equals(dateNow)==true) {
+				for(int p=i+1;p<transRecord.size();p++) {
+				  if(transRecord.get(p).getDate().equals(dateNow)==true) {
+					if(transRecord.get(i).getFoodName().equals(transRecord.get(p).getFoodName()) == true) {
+						dailySales.add(new DailySales (transRecord.get(i).getFoodName(),transRecord.get(i).getAmount()+transRecord.get(p).getAmount(),transRecord.get(i).getPerPrice(),transRecord.get(i).getTotalPerItem()+transRecord.get(p).getTotalPerItem()));
+					}
+					else {
+						dailySales.add(new DailySales (transRecord.get(i).getFoodName(),transRecord.get(i).getAmount(),transRecord.get(i).getPerPrice(),transRecord.get(i).getTotalPerItem()));
+					}
+				  }
+				}
+				
+			}
+		}System.out.print(dailySales.get(0).getFoodItem());*/
+		/*double rptGT=0;
+		for(int i = 0; i < dailySales.size();i++) {
+			rptGT += dailySales.get(i).getPrice();
+			System.out.printf("|%-3d|%-10s|%-5d|%-4f|",i,dailySales.get(i).getFoodItem(),dailySales.get(i).getAmount(),dailySales.get(i).getPrice());
+		}
+		System.out.print("--------------------------------------------------------\n");
+		System.out.printf("Grand Total :                                   |%.2f |\n",rptGT);
+		System.out.print("========================================================\n");*/
+
+
+		int next = 0;
+        Scanner getNext = new Scanner(System.in);
+        boolean doneAdd = false;
+        do {
+            do {
+                try {
+                    System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+                    next = getNext.nextInt();
+                    doneAdd = true;
+                    if (next == 2) {
+                        mainSelection();
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Please enter 1 or 2 only.\n");
+                    getNext.nextLine();
+                    System.out.println();
+                }
+            } while (next < 1 || next > 2);
+        } while (!doneAdd);
+        return next;
+	}
+	
+	private static int TopSales() {
+		for(int i=0;i<transRecord.size();i++) {
+			topReport.add(new TopReport (transRecord.get(i).getTransId(),transRecord.get(i).getFoodName(),transRecord.get(i).getPerPrice(),transRecord.get(i).getAmount(),transRecord.get(i).getTotalPerItem(),transRecord.get(i).getDate()));
+		}
+		
+		for(int i=0;i<topReport.size();i++) {
+			for(int k=i+1;k<topReport.size();k++) {
+				if(topReport.get(i).getFoodName().equals(topReport.get(k).getFoodName()) == true) {
+					topReport.get(i).setAmount(topReport.get(i).getAmount()+topReport.get(k).getAmount());
+					topReport.get(i).setTotalPerItem(topReport.get(i).getTotalPerItem()+topReport.get(k).getTotalPerItem());
+					topReport.remove(k);
+				}
+			}
+		}
+		/*for(int i=0;i<topReport.size();i++) {
+			System.out.printf("%s   %s    %.2f     %d   %.2f   %s\n",topReport.get(i).getTransId(),topReport.get(i).getFoodName(),topReport.get(i).getPerPrice(),topReport.get(i).getAmount(),topReport.get(i).getTotalPerItem(),topReport.get(i).getDate() );
+		}*/
+		
+		String foodTop1="";
+		String foodTop2="";
+		String foodTop3="";
+		int top1=0;
+		int top2=0;
+		int top3=0;
+		double pp1=0;
+		double pp2=0;
+		double pp3=0;
+		
+		
+		for(int i=0;i<topReport.size();i++) {
+			if(i == 0) {
+				foodTop1 = topReport.get(i).getFoodName();
+				top1 = topReport.get(i).getAmount();
+			}
+			else if(i == 1 && topReport.get(i).getAmount() > top1) {
+				top1 = top2;
+				foodTop1 = foodTop2;
+				top1 = topReport.get(i).getAmount();
+				foodTop1 = topReport.get(i).getFoodName();
+			}
+			else if(i == 1 && topReport.get(i).getAmount() == top1) {
+				top2 = topReport.get(i).getAmount();
+				foodTop2 = topReport.get(i).getFoodName();
+			}
+			else if(i == 2 && topReport.get(i).getAmount() >= top1) {
+				top3 = top2;
+				top2 = top1;
+				foodTop3 = foodTop2;	
+				foodTop2 = foodTop1;
+				
+				top1 = topReport.get(i).getAmount();
+				foodTop1 = topReport.get(i).getFoodName();
+	
+			}
+
+			else if(i==2 && topReport.get(i).getAmount() > top2 && topReport.get(i).getAmount() < top1||i==2 && topReport.get(i).getAmount() == top2) {
+				top3 = top2;
+				foodTop3 = foodTop2;
+				top2=topReport.get(i).getAmount();
+				foodTop2 = topReport.get(i).getFoodName();
+			}
+			else if(i==2 && topReport.get(i).getAmount() < top2 && topReport.get(i).getAmount() > top3 || topReport.get(i).getAmount() == top3) {
+				top3 = topReport.get(i).getAmount();
+				foodTop3 = topReport.get(i).getFoodName();
+			
+			}
+			//no i
+			else if(topReport.get(i).getAmount() > top1 ||  topReport.get(i).getAmount() == top1) {
+				top3 = top2;
+				top2 = top1;
+				foodTop3 = foodTop2;
+				foodTop2 = foodTop1;
+				
+				top1 =  topReport.get(i).getAmount();
+				foodTop1 =  topReport.get(i).getFoodName();
+				
+			}
+			else if(topReport.get(i).getAmount() > 2 &&  topReport.get(i).getAmount() < top1 ||  topReport.get(i).getAmount() == top2) {
+				top3 = top2;
+				foodTop3 = foodTop2;
+				top2 =  topReport.get(i).getAmount();
+				foodTop2 =  topReport.get(i).getFoodName();
+				
+			}
+			
+			else if (topReport.get(i).getAmount() < top2 &&  topReport.get(i).getAmount() > top3 ||  topReport.get(i).getAmount() == top3) {
+				top3 =  topReport.get(i).getAmount();
+				foodTop3 =  topReport.get(i).getFoodName();
+			}
+			
+			
+		}
+		
+		for(int i=0;i<topReport.size();i++) {
+			if(topReport.get(i).getFoodName().equals(foodTop1)== true) {
+				pp1 = topReport.get(i).getPerPrice();
+			}
+			else if (topReport.get(i).getFoodName().equals(foodTop2)== true) {
+				pp2 = topReport.get(i).getPerPrice();
+			}
+			else if  (topReport.get(i).getFoodName().equals(foodTop3)== true) {
+				pp3 = topReport.get(i).getPerPrice();
+			}
+		}
+		
+		System.out.println("=========================================================");
+		System.out.println("| TOP SALE / POPULAR ITEM                               |");
+		System.out.println("=========================================================");
+		System.out.println("|NO | Food Name                 |PerPrice|Amount| Total |");
+		System.out.println("---------------------------------------------------------");
+		System.out.printf("| 1 | %-26s|%7.2f|%7d|%7.2f|\n",foodTop1,pp1,top1,pp1*top1);
+		System.out.printf("| 2 | %-26s|%7.2f|%7d|%7.2f|\n",foodTop2,pp2,top2,pp2*top2);
+		System.out.printf("| 3 | %-26s|%7.2f|%7d|%7.2f|\n",foodTop3,pp3,top3,pp3*top3);
+		System.out.println("=========================================================\n\n\n");
+		
+		
+		int next = 0;
+        Scanner getNext = new Scanner(System.in);
+        boolean doneAdd = false;
+        do {
+            do {
+                try {
+                    System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+                    next = getNext.nextInt();
+                    doneAdd = true;
+                    if (next == 2) {
+                        mainSelection();
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Please enter 1 or 2 only.\n");
+                    getNext.nextLine();
+                    System.out.println();
+                }
+            } while (next < 1 || next > 2);
+        } while (!doneAdd);
+        return next;
+	}
+
+	
+	public static int transHistory() {
+		Scanner sth = new Scanner(System.in);
+		System.out.print("Enter date to view transcation history : ");
+		String inDate = sth.next();
+		int q = 1;
+		
+		System.out.printf("====================================================================\n");
+		System.out.printf("|No | Transaction ID | Name                     | Amount  | Total  |\n");
+		System.out.printf("====================================================================\n");
+		for(int i=0; i<transRecord.size();i++) {
+			if(transRecord.get(i).getDate().equals(inDate)) {
+				
+				
+				System.out.printf("| %d | %-15s|%-26s|%-9d|%-8.2f|\n",q,transRecord.get(i).getTransId(),transRecord.get(i).getFoodName(),transRecord.get(i).getAmount(),transRecord.get(i).getTotalPerItem());
+				q=q+1;
+			}
+		}
+		System.out.printf("======================================================================\n\n\n");
+
+
+		int next = 0;
+        Scanner getNext = new Scanner(System.in);
+        boolean doneAdd = false;
+        do {
+            do {
+                try {
+                    System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+                    next = getNext.nextInt();
+                    doneAdd = true;
+                    if (next == 2) {
+                        mainSelection();
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Please enter 1 or 2 only.\n");
+                    getNext.nextLine();
+                    System.out.println();
+                }
+            } while (next < 1 || next > 2);
+        } while (!doneAdd);
+        return next;
+        
 	}
 
 	private static int viewFoodDetails() {
@@ -733,14 +1012,361 @@ public class Main {
         
     }
 	
-	private static int viewTransactionHistory() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public static int createNewOrder() {
+		Transaction trans = new Transaction();
+		String transIdLast = transaction.get(transaction.size() - 1).getTransId();
+		int transIdNew = (transaction.size() - 1) + 2;
+		String subtransIdNow = transIdLast.substring(0,transIdLast.length()-1);
+		String realTransIdNow = subtransIdNow + transIdNew;
+		
+		double finalTotal = 0;
+		
+		//System.out.print(realTransIdNow);
+		
+		Scanner tsc = new Scanner(System.in);
+		String foodIdIn;
+		System.out.print("Order ID :" + realTransIdNow + "\n");
+		//System.out.print(food.get(1).getFoodName()+"\n");
+		
+		do {
+		System.out.print("Enter foodID ordered (type x to finish order):");
+		foodIdIn = tsc.next();
+		
+		for(int i=0; i < menuList.size() ;i++)
+		{
+			if(foodIdIn.equals(menuList.get(i).getFoodID()) == true) {
+				//get input
+				System.out.print("got this food id\n");
+				
+				int foodAmount;
+				//validation for integer only
+				
+				do {
+					System.out.print("Enter amount : ");
+					while(!tsc.hasNextInt()) {
+	                    System.out.println("Enter positive integer only!");
+	                    System.out.print("Enter amount:");
+	                    tsc.next();
+	                }
+					foodAmount = tsc.nextInt();
+					if(foodAmount <= -1) {
+						System.out.println("Enter positive integer!");
+					}
+				}while(foodAmount <= -1);
+				
+				String foodname = menuList.get(i).getFoodName();
+				double perPrice = menuList.get(i).getPrice();
+				Date timenow = new Date();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				String dateNow = dateFormat.format(timenow);
+				
+				//Calculation
+				double totalPerItem = perPrice*foodAmount;
+				finalTotal += totalPerItem;
+				
+				//System.out.println("hello\n");
+				
+				//Add to database
+				reciept.add(new Reciept (realTransIdNow,foodIdIn,foodname,perPrice,foodAmount,totalPerItem,dateNow));
+				
+				//to remove duplicate record
+				/*for(int p=0; p < 1000; p++)
+				{
+					System.out.print("hello\n");
+					if(foodIdIn.equals(reciept.get(p).getFoodId())) {
+						int upFoodAmount = foodAmount+reciept.get(p).getAmount();
+						reciept.get(p).setAmount(upFoodAmount);
+						double upTotalPerItem = totalPerItem + reciept.get(p).getTotalPerItem();
+						reciept.get(p).setTotalPerItem(upTotalPerItem);
+						reciept.add(new Reciept (realTransIdNow,foodIdIn,foodname,perPrice,upFoodAmount,upTotalPerItem,dateNow));
+						int upFoodAmount = foodAmount+reciept.get(p).getAmount();
+						double upTotalPerItem = totalPerItem + reciept.get(p).getTotalPerItem();
+						reciept.remove(p);
+						reciept.add(new Reciept (realTransIdNow,foodIdIn,foodname,perPrice,upFoodAmount,upTotalPerItem,dateNow));
+					}
+					else {
+						reciept.add(new Reciept (realTransIdNow,foodIdIn,foodname,perPrice,foodAmount,totalPerItem,dateNow));
+					}
+						
+				}*/
+				
+				
+				break;
+			}
+			
+			else if(foodIdIn.equals("x")) {
+				System.out.print("Are you sure noting else to add ? (y/n) : ");
+				char choice = tsc.next().charAt(0);
+				if(choice == 'n' || choice == 'N')
+				{
+					foodIdIn = "n";
+				}
+				else if (choice == 'y' || choice == 'Y') {
+					break;
+				}
+			}
+			
+			else if(i ==  (menuList.size()-1) ) {
+				System.out.print("Unknow food ID\n");
+			}
+			
+		}
+			}while(foodIdIn.equals("x") == false);
+		
+		//System.out.print(reciept.get(0).getFoodName()+"\n");
+		
+		//System.out.print("Any things else to modify? (y/n) : ");
+		//char modi = tsc.next().charAt(0);
+		char modi;
+		do {
+			System.out.print("Any things else to modify? (y/n) : ");
+			modi = tsc.next().charAt(0);
+			int endI =0;
+			if (modi == 'y' || modi == 'Y') {
+				//display current order
+				System.out.print("Current order:\n");
+				System.out.print("==========================================================\n");
+				System.out.print("No | Food Name \t    | Order Amount  |PerPrice \t| Total |\n");
+				System.out.print("==========================================================\n");
+				for(int i=0; i<reciept.size();i++) {
+					System.out.printf("%-2d | %-15s|%-15d|%-10.2f |%-7.2f|\n",i+1,reciept.get(i).getFoodName(),reciept.get(i).getAmount(), reciept.get(i).getPerPrice(), reciept.get(i).getTotalPerItem());
+					endI = i+1;
+				}
+				System.out.print("----------------------------------------------------------\n");
+				System.out.print("Grand Total : \t\t\t\t\t | "+ finalTotal +" | \n");
+				System.out.print("===========================================================\n\n");
+			
+				//modify
+				Scanner scMod = new Scanner(System.in);
+				
+				int modSelect = 0;
+				
+				//validate
+				do {
+					System.out.print("Enter NO to modify : ");
+					while(!scMod.hasNextInt()) {
+	                    System.out.println("Enter positive integer only withing the No range!");
+	                    System.out.print("Enter NO to modify : ");
+	                    scMod.next();
+	                }
+					modSelect = scMod.nextInt();
+					if(modSelect < 1 || modSelect > endI) {
+						System.out.println("Enter NO within range");
+					}
+				}while(modSelect < 1 || modSelect > endI);
+				
+				System.out.print("Do you want to remove or edit? (r/e) : ");
+				char remEdit = scMod.next().charAt(0);
+			
+				if(remEdit == 'r' || remEdit == 'R') {
+					reciept.remove(modSelect-1);
+					double newGrandTotal=0;
+				
+					System.out.print("\nCurrent order:\n");
+					System.out.print("Current order:\n");
+					System.out.print("==========================================================\n");
+					System.out.print("No | Food Name \t    | Order Amount  |PerPrice \t| Total |\n");
+					System.out.print("==========================================================\n");
+					for(int i=0; i<reciept.size();i++) {
+						newGrandTotal += reciept.get(i).getTotalPerItem();
+						System.out.printf("%-2d | %-15s|%-15d|%-10.2f |%-7.2f|\n",i+1,reciept.get(i).getFoodName(),reciept.get(i).getAmount(), reciept.get(i).getPerPrice(), reciept.get(i).getTotalPerItem());
+					}
+					System.out.print("----------------------------------------------------------\n");
+					System.out.printf("Grand Total : \t\t\t\t\t | %.2f | \n",newGrandTotal);
+					System.out.print("===========================================================\n\n\n");
+				}
+				else if (remEdit == 'e' || remEdit == 'E') {
+					Scanner modSC = new Scanner(System.in);
+					int valid = 0 ;
+					do {
+						System.out.print("Enter new food ID : ");
+						String newFID = modSC.next();
+						for(int i=0; i < menuList.size() ;i++)
+						{
+							if(newFID.equals(menuList.get(i).getFoodID()) == true) { 
+								valid = 1;
+								//get input
+								System.out.print("got this food id\n");
+								System.out.print("Enter amount : ");
+								int foodAmount = tsc.nextInt();
+								String foodname = menuList.get(i).getFoodName();
+								double perPrice = menuList.get(i).getPrice();
+								Date timenow = new Date();
+								SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+								String dateNow = dateFormat.format(timenow);
+						
+								//Calculation
+								double totalPerItem = perPrice*foodAmount;
+						
+								//System.out.println("hello\n");
+						
+								//Add to database
+								reciept.add(new Reciept (realTransIdNow,foodIdIn,foodname,perPrice,foodAmount,totalPerItem,dateNow));
+								//remove
+								reciept.remove(modSelect-1);
+								break;
+							}
+							/*boolean inFID = false;
+				
+					do {
+						System.out.print("Currently editing " + reciept.get(modSelect-1).getFoodName()+ "\n Enter new food ID :");
+						String editNewFID = scMod.next();
+						inFID = food.contains(editNewFID);
+						if(inFID == true) {
+							System.out.print("Enter Amount :");
+							int newAmount = scMod.nextInt();
+							String newFoodName = "";
+							double newFoodPerPrice = 0;
+						
+							for(int i=0;i<food.size();i++) {
+								if(food.get(i).getFoodId() == editNewFID) {
+									newFoodPerPrice = food.get(i).getPrice();
+									newFoodName = food.get(i).getFoodName();
+								}	
+							}
+							//calculation
+							double totalPerItem = newFoodPerPrice * newAmount;
+							Date timenow = new Date();
+							SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+							String dateNow = dateFormat.format(timenow);
+						
+							//add to database
+						
 
-	private static int createNewOrder() {
-		// TODO Auto-generated method stub
-		return 0;
+						}
+					
+					}while(inFID == false);*/
+						
+							else if (i==menuList.size()-1){
+								valid = 0 ;
+								System.out.printf("Unknow food ID, please enter again !\n");
+							}
+						}
+				}while(valid == 0);
+				
+					double GrandTotal=0;
+					System.out.print("==========================================================\n");
+					System.out.print("No | Food Name \t    | Order Amount  |PerPrice \t| Total |\n");
+					System.out.print("==========================================================\n");
+					for(int i=0; i<reciept.size();i++) {
+					
+						GrandTotal += reciept.get(i).getTotalPerItem();
+						System.out.printf("%-2d | %-15s|%-15d|%-10.2f |%-7.2f|\n",i+1,reciept.get(i).getFoodName(),reciept.get(i).getAmount(), reciept.get(i).getPerPrice(), reciept.get(i).getTotalPerItem());
+					}
+					System.out.print("----------------------------------------------------------\n");
+					System.out.printf("Grand Total : \t\t\t\t\t | %.2f | \n",GrandTotal);
+					System.out.print("===========================================================\n\n\n");
+			}
+		
+		
+			}
+			
+			else if(modi == 'n'|| modi == 'N') {
+				System.out.println("Nothing else to modify exiting...");
+			}
+			
+			else {
+				System.out.println("Enter y/n only");
+				modi = 'a';
+			}
+				
+				
+		}while(modi == 'a');
+		
+		//Add all to database
+		//eleminate duplicate data
+
+		for(int i=0;i<reciept.size();i++) {
+			for(int k=i+1;k<reciept.size();k++) {
+				if(reciept.get(i).getFoodId().equals(reciept.get(k).getFoodId()) == true) {
+					reciept.get(i).setAmount(reciept.get(i).getAmount()+reciept.get(k).getAmount());
+					reciept.get(i).setTotalPerItem(reciept.get(i).getTotalPerItem()+reciept.get(k).getTotalPerItem());
+					reciept.remove(k);
+				}
+			}
+		}
+		//display
+		double GrandTotal=0;
+		System.out.print("==========================================================\n");
+		System.out.print("No | Food Name \t    | Order Amount  |PerPrice \t| Total |\n");
+		System.out.print("==========================================================\n");
+		for(int i=0; i<reciept.size();i++) {
+		
+			GrandTotal += reciept.get(i).getTotalPerItem();
+			System.out.printf("%-2d | %-15s|%-15d|%-10.2f |%-7.2f|\n",i+1,reciept.get(i).getFoodName(),reciept.get(i).getAmount(), reciept.get(i).getPerPrice(), reciept.get(i).getTotalPerItem());
+		}
+		System.out.print("----------------------------------------------------------\n");
+		System.out.printf("Grand Total : \t\t\t\t\t | %.2f | \n",GrandTotal);
+		System.out.print("===========================================================\n\n\n");
+		
+		Scanner paySC = new Scanner(System.in);
+		double recieve;
+		
+		do {
+			System.out.print("Enter recieve amount : ");
+			while(!paySC.hasNextDouble()) {
+                System.out.println("Enter positive number only!");
+                System.out.print("Enter recieve amount : ");
+                tsc.next();
+            }
+			recieve = paySC.nextDouble();
+			if(recieve <= -1) {
+				System.out.println("Enter positive integer!");
+			}
+		}while(recieve <= -1);
+		
+		double changes = recieve - GrandTotal;
+		
+		//print reciept
+		double RGrandTotal=0;
+		System.out.print("==========================================================\n");
+		System.out.print("Reciept for  "+ reciept.get(0).getTransId()+"\t" +reciept.get(0).getDate()+"\n");
+		System.out.print("==========================================================\n");
+		System.out.print("No | Food Name \t    | Order Amount  |PerPrice \t| Total |\n");
+		System.out.print("==========================================================\n");
+		for(int i=0; i<reciept.size();i++) {
+		
+			RGrandTotal += reciept.get(i).getTotalPerItem();
+			System.out.printf("%-2d | %-15s|%-15d|%-10.2f |%-7.2f|\n",i+1,reciept.get(i).getFoodName(),reciept.get(i).getAmount(), reciept.get(i).getPerPrice(), reciept.get(i).getTotalPerItem());
+		}
+		System.out.print("----------------------------------------------------------\n");
+		System.out.printf("Grand Total : \t\t\t\t\t| %.2f | \n",RGrandTotal);
+		System.out.printf("Recieve     : \t\t\t\t\t| %.2f | \n",recieve);
+		System.out.printf("Changes     : \t\t\t\t\t| %.2f | \n", changes);
+		System.out.print("===========================================================\n\n\n");
+
+		//Add all to database
+		Date timenow = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String dateNow = dateFormat.format(timenow);
+		transaction.add(new Transaction (reciept.get(0).getTransId(),recieve,RGrandTotal,changes,reciept.get(0).getDate()));
+		for(int i=0; i<reciept.size();i++) {
+			transRecord.add(new TransRecord (reciept.get(i).getTransId(),reciept.get(i).getFoodName(),reciept.get(i).getPerPrice() , reciept.get(i).getAmount(), reciept.get(i).getTotalPerItem(),dateNow));
+		}
+		//clear reciept
+		reciept.clear();
+		
+		int next = 0;
+        Scanner getNext = new Scanner(System.in);
+        boolean doneAdd = false;
+        do {
+            do {
+                try {
+                    System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+                    next = getNext.nextInt();
+                    doneAdd = true;
+                    if (next == 2) {
+                        mainSelection();
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Please enter 1 or 2 only.\n");
+                    getNext.nextLine();
+                    System.out.println();
+                }
+            } while (next < 1 || next > 2);
+        } while (!doneAdd);
+        return next;
+        
 	}
 
 	//CRUD for manager==========================================================
@@ -1408,19 +2034,30 @@ public class Main {
 	
 	//display restaurant's logo
 	public static void logo() {
-		System.out.println("=================================================================================");
-		System.out.println("|                                                                               |");
-		System.out.println("|                  Welcome to Restaurant                                        |");
-		System.out.println("|                                                                               |");
-		System.out.println("|    RRRRR  EEEEE   SSS  TTTTTTT   A    U    U RRRRR     A    N     N TTTTTTT   |");
-		System.out.println("|    R    R E      S   S    T     A A   U    U R    R   A A   NN    N    T      |");
-		System.out.println("|    R    R E      S        T    A   A  U    U R    R  A   A  N N   N    T      |");
-		System.out.println("|    RRRRR  EEEE    SSS     T   AAAAAAA U    U RRRRR  AAAAAAA N  N  N    T      |");
-		System.out.println("|    R  R   E          S    T   A     A U    U R  R   A     A N   N N    T      |");
-		System.out.println("|    R   R  E      S   S    T   A     A U    U R   R  A     A N    NN    T      |");
-		System.out.println("|    R    R EEEEE   SSS     T   A     A  UUUU  R    R A     A N     N    T      |");
-		System.out.println("|                                                                               |");
-		System.out.println("=================================================================================");
+		System.out.println("  .. ..  .  .. ..  .  .. ..  .  .. ..  .  .. .. .%@#.  ..  .  .. ..  .  .. ..  .  .. ..  .  .. ..  .");
+		System.out.println("..  .  .. ..  .  .. ..  .  .. ..  .  ..@@@@@@& .. ..   &@@@@@@  .  .. ..  .  .. ..  .  .. ..  .  .. ");
+		System.out.println("                                  @@@@/      #@@@@@@@@@(      %@@@(                                 ");
+		System.out.println("  .. ..  .  .. ..  .  .. ..  . @@@&..  @@@@@@@@@@@@@@@@@@@@@@@.. .@@@@  .. ..  .  .. ..  .  .. ..  .");
+		System.out.println("..  .  .. ..  .  .. ..  .  ..@@@  .@@@@@@@@  @@@@@@@@@@@@@@@@@@@@@ ..@@@  .  .. ..  .  .. ..  .  .. ");
+		System.out.println("..  .  .. ..  .  .. ..  .  @@@.. @@@@@@@@@   @@@@@@@@@@@@@@@@@@@@@@@  .@@@.  .. ..  .  .. ..  .  .. ");
+		System.out.println("  .. ..  .  .. ..  .  .. @@@ . @@@@@@@@@& .. @@@@@. @# @@ @@ @@@@@@@@@  .@@..  .  .. ..  .  .. ..  .");
+		System.out.println("  .. ..  .  .. ..  .  ..@@@  @@@@@@@@@@@  .. @@@@@  @# @@ @@ @@@@@@@@@@@..@@@  .  .. ..  .  .. ..  .");
+		System.out.println("..  .  .. ..  .  .. .. @@  @@@@@@@@@@@  ..  .@@@@@..@/.@@.@@..@@@@@@@@@@@@. @@. ..  .  .. ..  .  .. ");
+		System.out.println("  .. ..  .  .. ..  .  @@ ..@@@@@@@@@@@ .  .. @@@@   @# @@ @@  @@@@@@@@@@@@ .(@@.  .. ..  .  .. ..  .");
+		System.out.println("  .. ..  .  .. ..  .  @@ .%@@@@@@@@@@@ .  .. @@@@.  @# @@ @@  @@@@@@@@@@@@ ..@@.  .. ..  .  .. ..  .");
+		System.out.println("..  .  .. ..  .  .. ..@@. /@@@@@@@@@@@. ..  .@@@@ ..@/.@@.@@..@@@@@@@@@@@@   @@ ..  .  .. ..  .  .. ");
+		System.out.println("..  .  .. ..  .  .. ..@@   @@@@@@@@@@@. ..  .@@@@ ..  .  .. ..@@@@@@@@@@@@. (@@ ..  .  .. ..  .  .. ");
+		System.out.println("..  .  .. ..  .  .. ..@@   @@@@@@@@@@@. ..  .@@@@ ..  .  .. ..@@@@@@@@@@@@. (@@ ..  .  .. ..  .  .. ");
+		System.out.println("..  .  .. ..  .  .. ..@@   @@@@@@@@@@@. ..  .@@@@ ..  .  .. ..@@@@@@@@@@@@. (@@ ..  .  .. ..  .  .. ");
+		System.out.println("  .. ..  .  .. ..  .  .@@..@@@@@@@@@@@ .  .. @@@@@  .. ..  . @@@@@@@@@@@@@ .@@ .  .. ..  .  .. ..  .");
+		System.out.println("  .. ..  .  .. ..  .  .@@@. @@@@@@@@@@ .  .. @@@@@@@@@ ..@@@@@@@@@@@@@@@@. @@& .  .. ..  .  .. ..  .");
+		System.out.println("..  .  .. ..  .  .. ..  @@@..@@@@@@@@@  ..  .@@@@@@@@@.  @@@@@@@@@@@@@@@  @@@.. ..  .  .. ..  .  .. ");
+		System.out.println("..  .  .. ..  .  .. ..  ./@@. .@@@@@@@@@@.  .@@@@@@@@@.  %@@@@@@@@@@@@.. @@  .. ..  .  .. ..  .  .. ");
+		System.out.println("  .. ..  .  .. ..  .  .. ..@@@   @@@@@@@@ .. @@@@@@@@@ .. @@@@@@@@@@ . @@@ ..  .  .. ..  .  .. ..  .");
+		System.out.println("  .. ..  .  .. ..  .  .. ..  @@@.. @@@@@@ .. @@@@@@@@@ .. @@@@@@@@.  @@@.. ..  .  .. ..  .  .. ..  .");
+		System.out.println("..  .  .. ..  .  .. ..  .  .. .@@@@  ..@@.  .@@@@@@@@@.  .@@@@  . @@@&..  .  .. ..  .  .. ..  .  .. ");
+		System.out.println("..  .  .. ..  .  .. ..  .  .. ..  (@@@@ ..  . @@@@@@@ .  .. ..@@@@ .. ..  .  .. ..  .  .. ..  .  .. ");
+		System.out.println("  .. ..  .  .. ..  .  .. ..  .  .. ..  @@@@@@@(  .  . #@@@@@@@.. ..  .  .. ..  .  .. ..  .  .. ..  .");
 	}
 	
 	//a menu for user to choose their position to log into the system
@@ -1568,7 +2205,7 @@ public class Main {
 		int choice = 0;
 		
 		System.out.println("=======================================");
-    	System.out.println("|            MANAGER MENU             |");
+    	System.out.println("|            MANAGER MENU             |");   
     	System.out.println("=======================================");
     	System.out.println("|  1. Add A New Staff Details         |");
     	System.out.println("|  2. Modify Existing Staff Details   |");
@@ -1579,9 +2216,10 @@ public class Main {
     	System.out.println("|  6. Modify Existing Food Details    |");
     	System.out.println("|  7. Remove A Food Details           |");
     	System.out.println("|  8. View All Food Details           |");
-    	System.out.println("|  9. View Transaction History        |");
+    	System.out.println("|  9. Top Sales                       |");
     	System.out.println("| 10. View Daily Sales Report         |");
-    	System.out.println("| 11. Log Out                         |");
+    	System.out.println("| 11. Transaction History             |");
+    	System.out.println("| 12. Log Out                         |");
     	System.out.println("=======================================");
     	boolean selected = false;
     	
@@ -1597,10 +2235,10 @@ public class Main {
     				scanner.nextLine();
     				System.out.println();
     			}
-    			if(choice < 1 || choice > 11) {
+    			if(choice < 1 || choice > 12) {
     				System.out.println("Enter 1 to 11 only\n");
     			}
-    		}while(choice < 1 || choice > 11);
+    		}while(choice < 1 || choice > 12);
     	}while(!selected);
     	return choice;
 	}
