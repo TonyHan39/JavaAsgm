@@ -12,6 +12,10 @@ public class Main {
 	//array list for every classes
 	public static ArrayList<Staff> staffArray = new ArrayList<Staff>();
 	public static ArrayList<Manager> managerArray = new ArrayList<Manager>();
+	public static ArrayList<Menu> menuList = new ArrayList<Menu>();
+	
+	//object
+	public static Menu menu = new Menu();
 	
 	public static void main (String[] args) {
 		/*data stored in arraylist---------------------------------------------------------------------------*/
@@ -42,6 +46,28 @@ public class Main {
 		staffArray.add(new Staff("EMP0023", "X Æ2 A-12"        , "Staff", 6000.00, "ST0018", "qwerty"));
 		staffArray.add(new Staff("EMP0024", "Yvonne McGuinness", "Staff", 6000.00, "ST0019", "qwerty"));
 		staffArray.add(new Staff("EMP0025", "Zoey Deutch"      , "Staff", 6000.00, "ST0020", "qwerty"));
+		
+		//array list for food menu
+		//Main dish
+		menuList.add( new Menu("1001"	, "Chicken Chop"		, 10.00, "Main dish") );
+		menuList.add( new Menu("1002"	, "Fish & Chip"			, 15.00, "Main dish") );
+		menuList.add( new Menu("1003"	, "Prawn Platter"		, 23.00, "Main dish") );
+		menuList.add( new Menu("1004"	, "Beef Steak"			, 17.00, "Main dish") );
+		//Soup
+		menuList.add( new Menu("1005"	, "Vegan Soup"			, 6.00, "Soup") );
+		menuList.add( new Menu("1006"	, "Mushroom Soup"		, 8.00, "Soup") );
+		//Snack
+		menuList.add( new Menu("1007"	, "French Fries"		, 5.00, "Snack") );
+		menuList.add( new Menu("1008"	, "Cheese Wedges"		, 5.00, "Snack") );
+		menuList.add( new Menu("1009"	, "Chicken PopCorn"		, 5.00, "Snack") );
+		menuList.add( new Menu("1010"	, "Chicken Nugget"		, 5.00, "Snack") );
+		//Beverage
+		menuList.add( new Menu("1011"	, "Lemon Iced Tea"		, 7.00, "Beverage") );
+		menuList.add( new Menu("1012"	, "Green Tea"			, 7.00, "Beverage") );
+		menuList.add( new Menu("1013"	, "Latte"				, 8.00, "Beverage") );
+		menuList.add( new Menu("1014"	, "Cappocino"			, 8.00, "Beverage") );
+	        
+		
 		/*data stored in arraylist---------------------------------------------------------------------------*/
 		
 		Scanner scanner = new Scanner(System.in);
@@ -104,25 +130,609 @@ public class Main {
 	}
 
 	private static int viewFoodDetails() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		System.out.println("Display Menu");
+		System.out.println("==============>");
+		System.out.printf( "   %-10s     %-30s     %-10s     %-10s\n", "MenuID", "Food Name", "Price", "Category");
+		System.out.println("=================================================================================");
+		
+		for(int i = 0; i < menuList.size(); i++){
+            System.out.printf( "|  %-10s  |  %-30s  |  %-10.2f  |  %-10s  |\n", menuList.get(i).getFoodID(), menuList.get(i).getFoodName(), menuList.get(i).getPrice(), menuList.get(i).getCategory() );
+            System.out.println("=================================================================================");
+    	}
+		
+		//loopback to main menu
+		int next = 0;
+        Scanner getNext = new Scanner(System.in);
+        boolean doneAdd = false;
+        do {
+            do {
+                try {
+                    System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+                    next = getNext.nextInt();
+                    doneAdd = true;
+                    if (next == 2) {
+                        mainSelection();
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Please enter 1 or 2 only.\n");
+                    getNext.nextLine();
+                    System.out.println();
+                }
+            } while (next < 1 || next > 2);
+        } while (!doneAdd);
+        return next;
+        
 	}
 
-	private static int deleteFoodDetails() {
-		// TODO Auto-generated method stub
-		return 0;
+	public static int deleteFoodDetails() {
+		
+		//scanner
+        Scanner scanForChoiceOfId = new Scanner(System.in);
+        Scanner scanForConfirmationToDelete = new Scanner(System.in);
+        
+        //variable for deleteFoodDetails method
+        String choiceOfID;
+        boolean validationForFoodId = false;
+        boolean deleteProcessDone = false;
+        char confirmationToDelete;
+        
+        do{
+            //viewFoodDetails();
+            System.out.print("Enter Food ID to delete Menu Item : ");
+            choiceOfID = scanForChoiceOfId.nextLine();
+            System.out.println("\nThe Food ID you choose : " + choiceOfID);
+            
+            //loop through the arrayList
+            for(int i = 0; i < menuList.size(); i++){
+                //input = value in arrayList
+                if( choiceOfID.equals(menuList.get(i).getFoodID()) ){
+                    validationForFoodId = true;
+                    //display the food item
+                    System.out.printf("Food ID of %s founded !!! \n\n", choiceOfID);
+                    System.out.printf( "   %-10s     %-30s     %-10s     %-10s\n", "MenuID", "Food Name", "Price", "Category");
+                    System.out.println("=================================================================================");
+                    System.out.printf( "|  %-10s  |  %-30s  |  %-10.2f  |  %-10s  |\n", menuList.get(i).getFoodID(), menuList.get(i).getFoodName(), menuList.get(i).getPrice(), menuList.get(i).getCategory() );
+                    System.out.println("=================================================================================\n");
+                    
+                    //confirmation to delete food item
+                    do{
+                        System.out.print("Enter Y to delete or Enter N to cancel : ");
+                        confirmationToDelete = scanForConfirmationToDelete.next().toUpperCase().charAt(0);
+                        
+                        //confirm delete
+                        if(confirmationToDelete == 'Y'){
+                            System.out.println("\nFood ID : " + menuList.get(i).getFoodID() );
+                            System.out.println("Food Name : " +  menuList.get(i).getFoodName() );
+                            System.out.println("The Food Item has been removed.");
+                            menuList.remove(i);
+                            deleteProcessDone = true;
+                        //cancel delete process 
+                        }else if(confirmationToDelete == 'N'){
+                            System.out.println("\nThe delete process has been canceled.");
+                            deleteProcessDone = true;
+                        //invalid input of Y and N
+                        }else{
+                            System.out.println("Enter Y or N only !!! ");
+                            deleteProcessDone = false;
+                        }
+                        
+                    }while(deleteProcessDone == false);
+                }
+            }
+            //input != value in arrayList
+            if(validationForFoodId == false){
+                System.out.println("No record found. Please try again!!! \n" );
+            }
+        }while(!validationForFoodId);
+        
+        //loopback to main menu
+        int next = 0;
+        Scanner getNext = new Scanner(System.in);
+        boolean doneAdd = false;
+        do {
+            do {
+                try {
+                    System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+                    next = getNext.nextInt();
+                    doneAdd = true;
+                    if (next == 2) {
+                        mainSelection();
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Please enter 1 or 2 only.\n");
+                    getNext.nextLine();
+                    System.out.println();
+                }
+            } while (next < 1 || next > 2);
+        } while (!doneAdd);
+        return next;
+        
 	}
 
-	private static int modifyFoodDetails() {
-		// TODO Auto-generated method stub
-		return 0;
+	public static int modifyFoodDetailsMenu() {
+		
+		//scanner
+		Scanner scannerForModifyFoodDetailsMenu = new Scanner(System.in);
+		
+		//variables for modifyFoodDetails
+		int choiceOfFoodDetailsToModify = 0;
+		boolean validationForCorrectInput = false;
+		
+		System.out.println("Choose a food detail to modify : ");
+		System.out.println("1. Food ID");
+		System.out.println("2. Food Name");
+		System.out.println("3. Food Price");
+		System.out.println("4. Food Category");
+		
+		do {
+            do {
+            	try {
+                    System.out.print("Enter your choice : ");
+                    choiceOfFoodDetailsToModify = scannerForModifyFoodDetailsMenu.nextInt();
+                    validationForCorrectInput = true;
+                }catch (Exception ex){
+                    System.out.println("\n\t=>Only numbers are allowed\n");
+                    scannerForModifyFoodDetailsMenu.nextLine();
+                }
+            	if (choiceOfFoodDetailsToModify < 1 || choiceOfFoodDetailsToModify > 4) {
+                    System.out.println("\n\t=>Please enter 1 to 4 only\n");
+            	}
+            } while (choiceOfFoodDetailsToModify < 1 || choiceOfFoodDetailsToModify > 4);
+			
+		} while (!validationForCorrectInput);
+        
+		return choiceOfFoodDetailsToModify;
+		
+	}
+	
+	public static int modifyFoodDetails() {
+		
+		//scanner
+		Scanner scannerForModifyFoodDetails = new Scanner(System.in);
+		Scanner scannerForConfirmation = new Scanner(System.in);
+        
+		//variables for modifyFoodDetails
+        boolean validationForRecordFounded = false;
+        String modifyFoodId;
+        String modifyFoodName;
+        double modifyPrice;
+        String modifyCategory;
+        boolean validation = false;
+        String choiceOfID = "";
+        char confirmationToModify;
+        boolean modifyProcessDone = false;
+        
+        System.out.println("Modify Food Details");
+    	System.out.println("===================");
+    	
+    	//if no record founded, display error message and loop back
+    	do {
+			try {
+				System.out.print("Enter Food ID to modify details : ");
+				choiceOfID = scannerForModifyFoodDetails.nextLine();
+				for (int i = 0; i < menuList.size(); i++) {
+					if (choiceOfID.equals(menuList.get(i).getFoodID())) {
+						validationForRecordFounded = true;
+					}
+				}
+				if (validationForRecordFounded == false) {
+					System.out.println("No record founded ! \n");
+				}
+			} catch (Exception ex) {
+				scannerForModifyFoodDetails.nextLine();
+				System.out.println();
+			}
+		} while (validationForRecordFounded == false);
+    	
+    	
+    	for(int i = 0; i < menuList.size(); i++){
+    		
+            //if recorded founded, continue to modify
+            if( choiceOfID.equals(menuList.get(i).getFoodID()) ){
+                validationForRecordFounded = true;
+                
+                //display details of the record founded
+                System.out.printf("\n\n Food ID of %s founded !!! \n\n", choiceOfID);
+                System.out.printf( "   %-10s     %-30s     %-10s     %-10s\n", "MenuID", "Food Name", "Price", "Category");
+                System.out.println("=================================================================================");
+                System.out.printf( "|  %-10s  |  %-30s  |  %-10.2f  |  %-10s  |\n", menuList.get(i).getFoodID(), menuList.get(i).getFoodName(), menuList.get(i).getPrice(), menuList.get(i).getCategory() );
+                System.out.println("=================================================================================\n");
+	    	
+                //let us choice which details to modify
+                switch( modifyFoodDetailsMenu() ){
+                    case 1:
+                        
+                        do{
+                            validation = false;
+                            System.out.print("\n1. Enter new Food ID   : ");
+                            modifyFoodId = scannerForModifyFoodDetails.nextLine();
+                            validation = validateNewFoodId(modifyFoodId);
+            
+                            if(validation == false){
+                                System.out.println("Please enter valid Food ID ! \n");
+                            }else{
+                            	
+                            	//confirmation to modify food id
+		                        do {
+		                        	System.out.print("\nEnter Y to modify or Enter N to cancel : ");
+		                        	confirmationToModify = scannerForConfirmation.next().toUpperCase().charAt(0);
+			                        
+		                        	//confirm to modify
+		                        	if(confirmationToModify == 'Y') {
+		                        		menuList.get(i).setFoodID(modifyFoodId);
+		                        		System.out.println("\n\t=>The Food Id has been modified.");
+		                        		modifyProcessDone = true;
+		                        	}else if (confirmationToModify == 'N') {
+										System.out.println("\n\t=>The modify process has been canceled.");
+										modifyProcessDone = true;
+									}else {
+										System.out.println("\n\t=>Enter Y or N only !!! ");
+										modifyProcessDone = false;
+									}
+		                        	
+								} while (modifyProcessDone == false);
+                            	
+                            }
+                            
+                        }while(validation == false);
+                        
+                        break;
+                        
+                    case 2:
+                        
+                        do{
+                            validation = false;
+                            System.out.print("\n2. Enter new Food Name   : ");
+                            modifyFoodName = scannerForModifyFoodDetails.nextLine();
+                            validation = validateNewFoodName(modifyFoodName);
+            
+                            if(validation == false){
+                                System.out.println("Please enter valid Food Name ! \n");
+                            }else{
+                                //System.out.println("Food Name Modified !!!\n");
+                            	
+                            	//confirmation to modify food id
+		                        do {
+		                        	System.out.print("\nEnter Y to modify or Enter N to cancel : ");
+		                        	confirmationToModify = scannerForConfirmation.next().toUpperCase().charAt(0);
+			                        
+		                        	//confirm to modify
+		                        	if(confirmationToModify == 'Y') {
+		                        		menuList.get(i).setFoodName(modifyFoodName);
+		                        		System.out.println("\n\t=>The Food Name has been modified.");
+		                        		modifyProcessDone = true;
+		                        	}else if (confirmationToModify == 'N') {
+										System.out.println("\n\t=>The modify process has been canceled.");
+										modifyProcessDone = true;
+									}else {
+										System.out.println("\n\t=>Enter Y or N only !!! ");
+										modifyProcessDone = false;
+									}
+		                        	
+								} while (modifyProcessDone == false);
+                            	
+                            }
+                        }while(validation == false);
+                        
+                        break;
+                        
+                    case 3:
+                        
+                        do{
+                            System.out.print("\n3. Enter Price     : ");
+            
+                            while(!scannerForModifyFoodDetails.hasNextDouble() ) {
+                                System.out.println("Please enter number only! ");
+                                System.out.print("\n3. Enter Price     : ");
+                                scannerForModifyFoodDetails.next(); // this is important!
+                            }
+            
+                            modifyPrice = scannerForModifyFoodDetails.nextDouble();
+            
+                            if(modifyPrice > 0) {
+                                //System.out.println("Food Price Modified. \n");
+                            	
+                            	//confirmation to modify food id
+		                        do {
+		                        	System.out.print("\nEnter Y to modify or Enter N to cancel : ");
+		                        	confirmationToModify = scannerForConfirmation.next().toUpperCase().charAt(0);
+			                        
+		                        	//confirm to modify
+		                        	if(confirmationToModify == 'Y') {
+		                        		menuList.get(i).setPrice(modifyPrice);
+		                        		System.out.println("\n\t=>The Food Price has been modified.");
+		                        		modifyProcessDone = true;
+		                        	}else if (confirmationToModify == 'N') {
+										System.out.println("\n\t=>The modify process has been canceled.");
+										modifyProcessDone = true;
+									}else {
+										System.out.println("\n\t=>Enter Y or N only !!! ");
+										modifyProcessDone = false;
+									}
+		                        	
+								} while (modifyProcessDone == false);
+                            	
+                            }else {
+                                System.out.println("Please enter positive value! \n");
+                            }
+            
+                        }while(modifyPrice <= 0);
+                        
+                        break;
+                        
+                    case 4:
+                        
+                        modifyCategory = chooseForCategory();
+                        
+                        //confirmation to modify food id
+                        do {
+                        	System.out.print("\nEnter Y to modify or Enter N to cancel : ");
+                        	confirmationToModify = scannerForConfirmation.next().toUpperCase().charAt(0);
+	                        
+                        	//confirm to modify
+                        	if(confirmationToModify == 'Y') {
+                        		menuList.get(i).setCategory(modifyCategory);
+                        		System.out.println("\n\t=>The Category has been modified.");
+                        		modifyProcessDone = true;
+                        	}else if (confirmationToModify == 'N') {
+								System.out.println("\n\t=>The modify process has been canceled.");
+								modifyProcessDone = true;
+							}else {
+								System.out.println("\n\t=>Enter Y or N only !!! ");
+								modifyProcessDone = false;
+							}
+                        	
+						} while (modifyProcessDone == false);
+                        
+                }
+                
+            }
+            
+        }
+    	
+        
+        //loopback to main menu
+        int next = 0;
+        Scanner getNext = new Scanner(System.in);
+        boolean doneAdd = false;
+        do {
+            do {
+                try {
+                    System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+                    next = getNext.nextInt();
+                    doneAdd = true;
+                    if (next == 2) {
+                        mainSelection();
+                    }
+                } catch (Exception ex) {
+                    System.out.println("Please enter 1 or 2 only.\n");
+                    getNext.nextLine();
+                    System.out.println();
+                }
+            } while (next < 1 || next > 2);
+        } while (!doneAdd);
+        return next;
+        
+              
 	}
 
+	//do validation for new food id
+	public static boolean validateNewFoodId(String newFoodID) {
+		
+		try {
+			Integer.parseInt(newFoodID);
+			return true;
+		}catch(Exception ex) {
+			return false;
+		}
+		
+	}
+	
+	//do validation for new food name
+	public static boolean validateNewFoodName(String newFoodName) {
+		
+		if(newFoodName.length() > 0 && newFoodName.length() < 30) {
+            return true;
+		}else {
+            return false;
+		}
+		
+	}
+	
+	
+	public static int chooseForCategoryMenu() {
+		
+		//scanner
+        Scanner scannerForChoiceOfFoodCategory = new Scanner(System.in);
+        
+        //variables for chooseForCategoryMenu
+        int choiceOfFoodCategory =0;
+        boolean validationForChoiceOfFoodCategory = false;
+        
+        System.out.println("\nChoose a food category : ");
+    	System.out.println("1. Main Dish");
+    	System.out.println("2. Soup");
+    	System.out.println("3. Snack");
+    	System.out.println("4. Beverage");
+    	System.out.println("5. Dessert");
+    	
+    	do{
+            do{
+                try{
+                    System.out.print("Choose a food category : ");
+                    choiceOfFoodCategory = scannerForChoiceOfFoodCategory.nextInt();
+                    validationForChoiceOfFoodCategory = true;
+                }catch(Exception ex){
+                	System.out.println("\n\t=>Only numbers are allowed !\n");
+                    scannerForChoiceOfFoodCategory.nextLine();
+                }
+                if( choiceOfFoodCategory < 1 || choiceOfFoodCategory > 5 ){
+                	System.out.println("\n\t=>Only numbers between 1 to 5 are allowed !\n");
+                }
+            }while( choiceOfFoodCategory < 1 || choiceOfFoodCategory > 5 );
+            
+        }while(!validationForChoiceOfFoodCategory);
+        
+        return choiceOfFoodCategory;
+        
+	}
+	
+	//category choosing method
+	public static String chooseForCategory() {
+		
+		//variable for chooseForCategory method
+        String newCategory;
+        
+        switch(chooseForCategoryMenu()){
+	        case 1:
+	            newCategory = "Main Dish";
+	            return newCategory;
+	            
+	        case 2:
+	            newCategory = "Soup";
+	            return newCategory;
+	            
+	        case 3:
+	            newCategory = "Snack";
+	            return newCategory;
+	            
+	        case 4:
+	            newCategory = "Beverage";
+	            return newCategory;
+	            
+	        case 5:
+	            newCategory = "Dessert";
+	            return newCategory;
+	            
+	        default :
+	            return null;
+        }
+	}
+	
 	private static int addNewFoodDetails() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		//scanner
+        //Scanner scannerForAddMenuMethod = new Scanner(System.in);
+        Scanner getNewFoodID = new Scanner(System.in);
+        Scanner getNewFoodName = new Scanner(System.in);
+        Scanner getNewFoodPrice = new Scanner(System.in);
+        
+        //variable for addNewFoodDetails method
+        String newFoodID;
+        String newFoodName;
+        double newPrice = 0;
+        String newCategory;
+        boolean validation;
+        boolean existence;
+        
+        //ask user to input food detail to form new menu item
+        System.out.println("Please enter the following detail to add new food item ==> ");
+        
+        //food id
+        do{
+            validation = false;
+            existence = false;
+            System.out.print("1. Enter Food ID   : ");
+            newFoodID = getNewFoodID.nextLine();
+            validation = validateNewFoodId(newFoodID);
+            existence = validationForExistingFoodId(newFoodID);
+            
+            if(validation == true && existence == false){
+                System.out.println("\n\t=>Food ID Accepted !!!\n");
+            }
+            else{
+                System.out.println("\n\t=>Please enter valid Food ID ! \n");
+            }
+        }while(validation == false || existence == true);
+        
+        //food name
+        do{
+            validation = false;
+            System.out.print("2. Enter Food Name   : ");
+            newFoodName = getNewFoodName.nextLine();
+            validation = validateNewFoodName(newFoodName);
+            
+            if(validation == false){
+                System.out.println("\n\t=>Please enter valid Food Name ! \n");
+            }else{
+                System.out.println("\n\t=>Food Name Accepted !!!\n");
+            }
+        }while(validation == false);
+        
+        //food price
+        do{
+            System.out.print("3. Enter Price     : ");
+            
+            while(!getNewFoodPrice.hasNextDouble() ) {
+				System.out.println("\n\t=>Please enter number only. ");
+				System.out.print("\n3. Enter Price     : ");
+				getNewFoodPrice.next(); // this is important!
+            }
+            
+            newPrice = getNewFoodPrice.nextDouble();
+            
+            if(newPrice > 0) {
+                System.out.println("\n\t=>Input Accepted. \n");
+            }else {
+            	System.out.println("\n\t=>Please enter positive value. \n");
+            }
+            
+        }while(newPrice <= 0);
+        
+        //food category
+        newCategory = chooseForCategory();
+        
+        menuList.add(new Menu(newFoodID, newFoodName, newPrice, newCategory));
+        
+        System.out.println("\nNew food item added into the menu ==>");
+        System.out.println("=====================================");
+        System.out.println("Menu ID   : " + newFoodID);
+        System.out.println("Menu Name : " + newFoodName);
+        System.out.println("Price     : RM " + newPrice);
+        System.out.println("Category  : " + newCategory);
+        System.out.printf("\n\n");
+		
+        //viewFoodDetails();
+        Scanner getNext = new Scanner(System.in);
+        boolean doneModify = false;
+		int next = 0;
+		do {
+			do {
+				try {
+					System.out.print("\nPress 1 to CONTINUE / Press 2 to LOG OUT: ");
+					next = getNext.nextInt();
+					doneModify = true;
+					if (next == 2) {
+						mainSelection();
+					}
+				} catch (Exception ex) {
+					System.out.println("");
+					getNext.nextLine();
+					System.out.println();
+				}
+			} while (next < 1 || next > 2);
+		} while (doneModify == false);
+		return next;
+        
 	}
 
+	//check for existing food id
+	public static boolean validationForExistingFoodId(String newFoodID){
+        
+        boolean exist = false;
+        
+        for(int i = 0; i < menuList.size(); i++){
+            if( newFoodID.equals( menuList.get(i).getFoodID() )){
+                exist = true;
+                System.out.println("\n\t=>This Food ID has been used !\n");
+            }
+        }
+        
+        return exist;
+        
+    }
+	
 	private static int viewTransactionHistory() {
 		// TODO Auto-generated method stub
 		return 0;
