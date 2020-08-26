@@ -1,14 +1,14 @@
-class Employee {
+public abstract class Employee {
 	private String employeeID;
 	private String employeeName;
 	private String employeePosition;
 	private double salary;
 	
 	//default constructor
-	public Employee(){}
+	protected Employee(){}
 	
 	//constructor with parameters
-	public Employee(String employeeID, String employeeName, String employeePosition, double salary){
+	protected Employee(String employeeID, String employeeName, String employeePosition, double salary){
 		this.employeeID = employeeID;
 		this.employeeName = employeeName;
 		this.employeePosition = employeePosition;
@@ -54,4 +54,5 @@ class Employee {
 		return String.format("%-10s| %-20s| %-10s| %8.2f |", employeeID, employeeName, employeePosition, salary);
 	}
 	
+	public abstract boolean verifyLoginID(String loginID);
 }

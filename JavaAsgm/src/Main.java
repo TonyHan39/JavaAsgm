@@ -1974,13 +1974,13 @@ public class Main {
 	
 	//to validate the length of employees' name
 	public static boolean validateEmployeeName(String name) {
-		String nameFormat = "^[A-Za-z]{20}";
+		String nameFormat = "^(?=.*[A-Za-z]).{1,20}";
 		if (name.length() > 0 && name.length() <= 20) {
 			if (name.matches(nameFormat) == true) {
 				return true;
 			}
 			else {
-				System.out.println("Symbols are not allows.\n");
+				System.out.println("Symbols and numbers are not allows.\n");
 			}
 		}
 		else {
@@ -2106,13 +2106,11 @@ public class Main {
 						System.out.print("Staff Login ID : ");
 						loginID = scanner.next();
 						System.out.print("Password : ");
-						
 						loginPassword = scanner.next();
 						
-						UserLogin staff = new UserLogin(loginID, loginPassword);
-						boolean checkStaffID = staff.validateLoginID(loginID);
+						Employee checkStaffID = new Staff();
 						
-						if(checkStaffID == true){
+						if(((Staff) checkStaffID).verifyLoginID(loginID) == true){
 							for(int i = 0; i < staffArray.size(); i++){
 								if((loginID.equals(staffArray.get(i).getStaffLoginID())) && (loginPassword.equals(staffArray.get(i).getStaffPassword())) == true){
 									Date date = new Date();
@@ -2136,10 +2134,9 @@ public class Main {
 						System.out.print("Password: ");
 						loginPassword = scanner.next();
 						
-						UserLogin manager = new UserLogin(loginID, loginPassword);
-						boolean checkManagerID = manager.validateLoginID(loginID);
+						Employee checkManagerID = new Manager();
 						
-						if(checkManagerID == true) {
+						if(((Manager) checkManagerID).verifyLoginID(loginID) == true) {
 							for(int i = 0; i < managerArray.size(); i++) {
 								if((loginID.equals(managerArray.get(i).getLoginID())) && (loginPassword.equals(managerArray.get(i).getPassword())) == true) {
 									Date date = new Date();
@@ -2157,7 +2154,6 @@ public class Main {
 					}while(isManager == false);
 				
 			break;
-			//to be fixed
 			case 3: 
 				System.out.println("\nSystem shutting down...\nThank you! Goodbye!");
 				System.exit(0);
@@ -2236,27 +2232,10 @@ public class Main {
     				System.out.println();
     			}
     			if(choice < 1 || choice > 12) {
-    				System.out.println("Enter 1 to 11 only\n");
+    				System.out.println("Enter 1 to 12 only\n");
     			}
     		}while(choice < 1 || choice > 12);
     	}while(!selected);
     	return choice;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
