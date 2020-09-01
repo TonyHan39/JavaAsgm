@@ -28,25 +28,13 @@ public class Staff extends Employee {
 	
 	@Override
 	public boolean verifyLoginID(String loginID){
-    	int numOfChar = 0;
-    	int	numOfDigit = 0;
-    	
-    	//example of login id : ST0001, MA0001
-    	//all login id must consist of 2 upper cased characters and 4 digit integer
+    	String IdFormat = "[S,T]{2}[\\d]{4}";
+    	//example staff login id : ST0001
+    	//staff login id must consist of 2 upper cased "ST" characters and 4 digit integer
     	if(loginID.length() > 0 && loginID.length() < 7){
-    		if(Character.isUpperCase(loginID.charAt(0)) == true){
-    			for(int i = 0 ; i < loginID.length(); i++){
-    				if(Character.isLetter(loginID.charAt(i)) == true) {
-    					numOfChar++;
-    				}
-    				if(Character.isDigit(loginID.charAt(i)) == true) {
-    					numOfDigit++;
-    				}
-    			}
-    		}
-    		if(numOfChar == 2 && numOfDigit == 4){
-    			return true;
-    		}
+    		if (loginID.matches(IdFormat) == true) {
+				return true;
+			}
     	}
     	return false;
     }

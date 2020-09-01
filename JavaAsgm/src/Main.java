@@ -1993,7 +1993,7 @@ public class Main {
 	public static boolean validateStaffLoginID(String id) {
 		String IdFormat = "[S,T]{2}[\\d]{4}";
 		if (id.length() > 0 && id.length() < 7) {
-			if (Character.isUpperCase(id.charAt(0)) == true && id.matches(IdFormat) == true) {
+			if (id.matches(IdFormat) == true) {
 				return true;
 			}
 			else {
